@@ -1,0 +1,43 @@
+{
+  "_note": "Published natal flying-star charts used to validate src/flying_stars.py cell-for-cell. Each palace lists [mountain_star, base_star, facing_star]. Grid orientation: South is up, North is down (the flying-star convention). Chart #1 (P8 facing Wu/S2) is transcribed from fengshuied.com. Chart #2 (P9 facing Wu/S2) is computed by the same Lo Shu rules and corroborated by the documented Period-9 'double 9 at the sitting palace' signature. Sources in Links.md.",
+  "charts": [
+    {
+      "id": "P8-S2",
+      "period": 8,
+      "facing_degrees": 180.0,
+      "facing_mountain": "Wu",
+      "facing_direction": "South",
+      "sitting_direction": "North",
+      "palaces": {
+        "Center":    [4, 8, 3],
+        "North":     [9, 4, 7],
+        "Northeast": [7, 2, 9],
+        "East":      [2, 6, 5],
+        "Southeast": [3, 7, 4],
+        "South":     [8, 3, 8],
+        "Southwest": [1, 5, 6],
+        "West":      [6, 1, 1],
+        "Northwest": [5, 9, 2]
+      }
+    },
+    {
+      "id": "P9-S2",
+      "period": 9,
+      "facing_degrees": 180.0,
+      "facing_mountain": "Wu",
+      "facing_direction": "South",
+      "sitting_direction": "North",
+      "palaces": {
+        "Center":    [5, 9, 4],
+        "North":     [9, 5, 9],
+        "Northeast": [2, 3, 7],
+        "East":      [7, 7, 2],
+        "Southeast": [6, 8, 3],
+        "South":     [1, 4, 8],
+        "Southwest": [8, 6, 1],
+        "West":      [3, 2, 6],
+        "Northwest": [4, 1, 5]
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "sunny_studio",
+  "description": "A clean, square one-bedroom. The easy case: a tidy rectangle with an unambiguous south facing. This is the Week 1 'whole game' home.",
+  "facing_degrees": 178.0,
+  "construction_year": 2025,
+  "grid": [
+    ["bedroom", "bedroom", "kitchen"],
+    ["living",  "living",  "kitchen"],
+    ["entry",   "living",  "bath"]
+  ],
+  "features": [
+    {"type": "door",  "cell": [2, 0], "wall": "south"},
+    {"type": "bed",   "cell": [0, 0], "facing": 180},
+    {"type": "desk",  "cell": [1, 1], "facing": 90},
+    {"type": "stove", "cell": [0, 2]}
+  ]
+}

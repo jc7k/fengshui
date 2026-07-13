@@ -1,0 +1,17 @@
+{
+  "name": "edge_case_flat",
+  "description": "A home whose measured facing (172.4 degrees) sits right on the boundary between two of the 24 mountains — Bing (S1) ends and Wu (S2) begins at 172.5. A real practitioner would re-measure; Flying Stars cannot honestly assign a chart here. This home exists to make the tool REFUSE, on purpose.",
+  "facing_degrees": 172.4,
+  "construction_year": 2018,
+  "grid": [
+    ["bedroom", "living",  "living"],
+    ["bath",    "living",  "dining"],
+    ["kitchen", "entry",   "office"]
+  ],
+  "features": [
+    {"type": "door",  "cell": [2, 1], "wall": "south"},
+    {"type": "bed",   "cell": [0, 0], "facing": 200},
+    {"type": "desk",  "cell": [2, 2], "facing": 315},
+    {"type": "stove", "cell": [2, 0]}
+  ]
+}

@@ -1,0 +1,16 @@
+[project]
+name = "fengshui"
+version = "0.1.0"
+description = "A self-paced feng shui Home Analyzer — cultural literacy as a first coding project"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # Visualization — the only real dependency. Everything else is Python's
+    # standard library (json, math), because a floor plan is a tiny grid and
+    # the feng shui math is small-integer arithmetic and table lookups.
+    "matplotlib>=3.6",   # draw the floor-plan grid + bagua / flying-star overlays
+    # Notebook UI + local kernel (the capstone's optional picker widget; lets a
+    # local uv env act as a VS Code notebook kernel).
+    "ipywidgets>=8.0",
+    "ipykernel>=6.0",
+]

@@ -1,0 +1,18 @@
+{
+  "name": "north_house",
+  "description": "A north-facing family house (a 4x3 grid). Bigger than the studio, unambiguous facing (2 degrees, deep in Zi / N2). A good second home for the capstone so its report can be compared against the south-facing studio.",
+  "facing_degrees": 2.0,
+  "construction_year": 2006,
+  "grid": [
+    ["entry",   "hall",    "office"],
+    ["living",  "living",  "dining"],
+    ["living",  "kitchen", "dining"],
+    ["bedroom", "bedroom", "bath"]
+  ],
+  "features": [
+    {"type": "door",  "cell": [0, 0], "wall": "north"},
+    {"type": "bed",   "cell": [3, 0], "facing": 90},
+    {"type": "desk",  "cell": [0, 2], "facing": 180},
+    {"type": "stove", "cell": [2, 1]}
+  ]
+}

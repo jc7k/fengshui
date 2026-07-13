@@ -1,0 +1,27 @@
+{
+  "_note": "The Five Elements (Wu Xing) and their canonical correspondences and cycles. Used by src/elements.py and asserted against in the Week 2 notebook. Directions/colors follow the mainstream Later-Heaven correspondences taught in most feng shui texts; sources in obsidian-vault/99-Resources/Links.md.",
+  "elements": ["Wood", "Fire", "Earth", "Metal", "Water"],
+  "correspondences": {
+    "Wood":  {"direction": "East",  "color": "Green",         "season": "Spring", "trigrams": ["Zhen", "Xun"]},
+    "Fire":  {"direction": "South", "color": "Red",           "season": "Summer", "trigrams": ["Li"]},
+    "Earth": {"direction": "Center","color": "Yellow",        "season": "Late Summer", "trigrams": ["Kun", "Gen"]},
+    "Metal": {"direction": "West",  "color": "White",         "season": "Autumn", "trigrams": ["Qian", "Dui"]},
+    "Water": {"direction": "North", "color": "Blue",          "season": "Winter", "trigrams": ["Kan"]}
+  },
+  "generating_cycle": {
+    "_note": "sheng — 'X generates/feeds Y'. A closed 5-cycle.",
+    "Wood": "Fire",
+    "Fire": "Earth",
+    "Earth": "Metal",
+    "Metal": "Water",
+    "Water": "Wood"
+  },
+  "controlling_cycle": {
+    "_note": "ke — 'X controls/weakens Y'. Skips one node of the generating cycle.",
+    "Wood": "Earth",
+    "Earth": "Water",
+    "Water": "Fire",
+    "Fire": "Metal",
+    "Metal": "Wood"
+  }
+}

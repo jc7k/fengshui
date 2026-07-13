@@ -1,0 +1,29 @@
+{
+  "_note": "The 24 Mountains: each of the 8 compass directions split into three 15-degree sub-sectors. 'index' is the sub-mountain 1/2/3 within its direction. 'polarity' (yang/yin) drives Flying Stars forward/reverse flight. Cardinal directions run yang-yin-yin; the four corner directions run yin-yang-yang. Cross-checked against Wikipedia 'Flying Star Feng Shui'; sources in Links.md. Zi (N2) straddles 0 degrees (352.5-360 and 0-7.5).",
+  "mountains": [
+    {"name": "Ren",  "direction": "North",     "index": 1, "start": 337.5, "end": 352.5, "polarity": "yang"},
+    {"name": "Zi",   "direction": "North",     "index": 2, "start": 352.5, "end": 7.5,   "polarity": "yin"},
+    {"name": "Gui",  "direction": "North",     "index": 3, "start": 7.5,   "end": 22.5,  "polarity": "yin"},
+    {"name": "Chou", "direction": "Northeast", "index": 1, "start": 22.5,  "end": 37.5,  "polarity": "yin"},
+    {"name": "Gen",  "direction": "Northeast", "index": 2, "start": 37.5,  "end": 52.5,  "polarity": "yang"},
+    {"name": "Yin",  "direction": "Northeast", "index": 3, "start": 52.5,  "end": 67.5,  "polarity": "yang"},
+    {"name": "Jia",  "direction": "East",      "index": 1, "start": 67.5,  "end": 82.5,  "polarity": "yang"},
+    {"name": "Mao",  "direction": "East",      "index": 2, "start": 82.5,  "end": 97.5,  "polarity": "yin"},
+    {"name": "Yi",   "direction": "East",      "index": 3, "start": 97.5,  "end": 112.5, "polarity": "yin"},
+    {"name": "Chen", "direction": "Southeast", "index": 1, "start": 112.5, "end": 127.5, "polarity": "yin"},
+    {"name": "Xun",  "direction": "Southeast", "index": 2, "start": 127.5, "end": 142.5, "polarity": "yang"},
+    {"name": "Si",   "direction": "Southeast", "index": 3, "start": 142.5, "end": 157.5, "polarity": "yang"},
+    {"name": "Bing", "direction": "South",     "index": 1, "start": 157.5, "end": 172.5, "polarity": "yang"},
+    {"name": "Wu",   "direction": "South",     "index": 2, "start": 172.5, "end": 187.5, "polarity": "yin"},
+    {"name": "Ding", "direction": "South",     "index": 3, "start": 187.5, "end": 202.5, "polarity": "yin"},
+    {"name": "Wei",  "direction": "Southwest", "index": 1, "start": 202.5, "end": 217.5, "polarity": "yin"},
+    {"name": "Kun",  "direction": "Southwest", "index": 2, "start": 217.5, "end": 232.5, "polarity": "yang"},
+    {"name": "Shen", "direction": "Southwest", "index": 3, "start": 232.5, "end": 247.5, "polarity": "yang"},
+    {"name": "Geng", "direction": "West",      "index": 1, "start": 247.5, "end": 262.5, "polarity": "yang"},
+    {"name": "You",  "direction": "West",      "index": 2, "start": 262.5, "end": 277.5, "polarity": "yin"},
+    {"name": "Xin",  "direction": "West",      "index": 3, "start": 277.5, "end": 292.5, "polarity": "yin"},
+    {"name": "Xu",   "direction": "Northwest", "index": 1, "start": 292.5, "end": 307.5, "polarity": "yin"},
+    {"name": "Qian", "direction": "Northwest", "index": 2, "start": 307.5, "end": 322.5, "polarity": "yang"},
+    {"name": "Hai",  "direction": "Northwest", "index": 3, "start": 322.5, "end": 337.5, "polarity": "yang"}
+  ]
+}

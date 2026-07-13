@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Obsidian workspace state (keep the notes, drop the local UI state)
+obsidian-vault/.obsidian/workspace*
+obsidian-vault/.obsidian/cache
+
+# OS
+.DS_Store

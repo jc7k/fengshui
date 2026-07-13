@@ -1,0 +1,22 @@
+{
+  "_note": "The eight trigrams (Later Heaven / compass arrangement) plus the center, each with its compass direction, element, and the life area it governs. This shared table is what makes 'schools conflict' visible: the compass schools place these by direction, BTB places the SAME life areas by the front-door wall. Used by src/bagua.py; asserted in Week 2. Life-area names follow the common nine-aspiration bagua.",
+  "trigrams": {
+    "Li":   {"direction": "South",     "element": "Fire",  "life_area": "Fame",           "lines": "101"},
+    "Kun":  {"direction": "Southwest", "element": "Earth", "life_area": "Relationships",  "lines": "000"},
+    "Dui":  {"direction": "West",      "element": "Metal", "life_area": "Children",       "lines": "110"},
+    "Qian": {"direction": "Northwest", "element": "Metal", "life_area": "Helpful People", "lines": "111"},
+    "Kan":  {"direction": "North",     "element": "Water", "life_area": "Career",         "lines": "010"},
+    "Gen":  {"direction": "Northeast", "element": "Earth", "life_area": "Knowledge",      "lines": "001"},
+    "Zhen": {"direction": "East",      "element": "Wood",  "life_area": "Family",         "lines": "100"},
+    "Xun":  {"direction": "Southeast", "element": "Wood",  "life_area": "Wealth",         "lines": "011"}
+  },
+  "center": {"direction": "Center", "element": "Earth", "life_area": "Health"},
+  "btb_grid": {
+    "_note": "The BTB (Black Sect) three-door bagua. The grid is anchored to the wall containing the front door, which is ALWAYS the bottom row. Rows top-to-bottom, columns left-to-right, as you stand in the doorway looking in.",
+    "rows": [
+      ["Wealth", "Fame",     "Relationships"],
+      ["Family", "Health",   "Children"],
+      ["Knowledge", "Career", "Helpful People"]
+    ]
+  }
+}
