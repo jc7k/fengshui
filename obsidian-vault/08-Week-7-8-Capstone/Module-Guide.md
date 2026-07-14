@@ -20,6 +20,8 @@ human decide. That honesty *is* the sophistication.
   built all four schools; it will read completely differently.
 - [[../01-Feng-Shui-Fundamentals/A-Note-on-Honesty|A Note on Honesty]] — the conflict table is
   this note made concrete.
+- [[How-Practitioners-Reconcile-the-Schools|How Practitioners Reconcile the Schools]] — what real
+  practitioners do when the schools disagree, and why your report refuses a final score.
 
 ## Steps
 1. **Describe the people** — a list of occupants with `name`, `year`, `gender` (optionally

@@ -12,8 +12,7 @@ particular takes a real calendar). This is a taste, not a reading. It also uses 
 solar year — a January birth belongs to the previous year, same Li Chun boundary as
 eight_mansions.py.
 
-Primer: obsidian-vault/09-Bonus-BaZi/Autoregressive-Intro is NOT this — see the
-Bonus Module-Guide.
+Primer: obsidian-vault/09-Bonus-BaZi/Four-Pillars-Ba-Zi.md
 """
 
 from eight_mansions import solar_year

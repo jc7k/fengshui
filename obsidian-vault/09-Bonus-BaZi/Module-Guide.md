@@ -16,6 +16,8 @@ feng shui. So we do the one pillar that's honestly computable from a year, and w
 *less*, correctly, is the point.
 
 ## Before you code
+- Read the primer: [[Four-Pillars-Ba-Zi|The Four Pillars (Ba Zi)]] — the sexagenary cycle, the
+  stems and branches, and a year pillar worked by hand.
 - You already have everything you need from [[../04-Week-3-Eight-Mansions/Module-Guide|Week 3]]
   (birth year, the Li Chun ~Feb-4 boundary, the Five Elements).
 

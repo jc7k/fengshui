@@ -21,6 +21,7 @@ Week 1 is your walk-through.
 - [[../01-Feng-Shui-Fundamentals/The-Eight-Trigrams-and-Bagua|The Eight Trigrams & Bagua]] — the
   nine life areas you'll place.
 - [[../01-Feng-Shui-Fundamentals/Schools-Overview|Schools Overview]] — so you know what's coming.
+- [[Feng-Shui-Origins-Wind-and-Water|Feng Shui's Origins (Wind & Water)]] — where all of this came from.
 
 ## Steps
 1. **Open the notebook in Colab** (see [[../../GETTING_STARTED|GETTING_STARTED]]). Run the bootstrap

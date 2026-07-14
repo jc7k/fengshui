@@ -48,3 +48,5 @@ names. You'll build *both* overlays and compare them in Week 6.
   will the compass school agree?
 
 ➡️ Next: [[The-Luopan-and-24-Mountains|The Luopan & 24 Mountains]].
+
+➡️ See also: where this arrangement comes from — Early vs Later Heaven — is told in [[../07-Week-6-BTB-Contrast/BTB-and-Compass-Bagua|BTB & the Compass Bagua]].

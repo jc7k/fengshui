@@ -20,6 +20,8 @@ speaks this vocabulary, so we build it now and check it carefully.
 ## Before you code — read these primers
 - [[../01-Feng-Shui-Fundamentals/The-Five-Elements-and-Cycles|The Five Elements & Cycles]] — the
   two cycles you're about to code.
+- [[Five-Elements-in-Depth-Wu-Xing|The Five Elements in Depth]] — the deep end of that primer:
+  history, the weakening cycle, the full correspondence table, and the classic remedy move.
 - [[../01-Feng-Shui-Fundamentals/The-Eight-Trigrams-and-Bagua|The Eight Trigrams & Bagua]] — a
   refresher, because each life area carries an element too.
 

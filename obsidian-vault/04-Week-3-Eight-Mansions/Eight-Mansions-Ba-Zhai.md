@@ -31,6 +31,75 @@ shui year begins near **Feb 4 (Li Chun)**, not Jan 1 — so a January birth belo
 *previous* year, and Feb 4 is itself approximate enough that early-February births are a genuine
 gray zone. This is exactly why online Kua calculators disagree with each other.
 
+## Where Ba Zhai comes from
+The school's roots are usually traced to the **Tang dynasty** (618–907), and its canonical text
+is the **Ba Zhai Ming Jing** (八宅明鏡, "Bright Mirror of the Eight Mansions"). Honestly,
+though: the book is traditionally *attributed* to the Tang master **Yang Yunsong** (楊筠松), but
+the text we have was compiled by a Qing-dynasty editor writing as **Ruoguan Daoren** (箬冠道人),
+best-known edition printed **1790**. Sources genuinely disagree — some credit Yang outright,
+some treat his name as borrowed authority on a much later book. "A Qing-era text carrying a
+Tang master's name" is the defensible claim.
+
+The East/West split isn't arbitrary, either: the two groups fall straight out of the trigram
+families of the **Later Heaven** bagua arrangement — a term we won't unpack until
+[[../07-Week-6-BTB-Contrast/BTB-and-Compass-Bagua|Week 6's note]].
+
+One scope note. Classical Ba Zhai is *two-sided*: it also assigns the **house** a trigram — a
+**house-gua**, from the building's **sitting direction** — and matches person to house
+(East-group people belong in East-group houses). Our code implements the **person side only**;
+the house side needs rules we haven't earned yet, and half a school done honestly beats all of
+it done vaguely.
+
+## The eight qualities, in Chinese
+The names in our code and reference table are romanized; here is what they actually say. The
+vividness is the mnemonic — nobody forgets which direction the "five ghosts" live in.
+
+| In code & data | 漢字 | Pinyin | Literally |
+| --- | --- | --- | --- |
+| Sheng Qi | 生氣 | shēng qì | "growing breath" |
+| Tian Yi | 天醫 | tiān yī | "heavenly doctor" |
+| Yan Nian | 延年 | yán nián | "extended years" |
+| Fu Wei | 伏位 | fú wèi | "hidden position" |
+| Huo Hai | 禍害 | huò hài | "mishap & harm" |
+| Wu Gui | 五鬼 | wǔ guǐ | "five ghosts" |
+| Liu Sha | 六煞 | liù shà | "six killings" |
+| Jue Ming | 絕命 | jué mìng | "severed fate" |
+
+## Two Kua, worked by hand
+Two births that between them exercise every wrinkle in the formula.
+
+**Female, born 1996.** Reduce the last two digits: 9 + 6 = 15 → 1 + 5 = **6**. Female before
+2000 means *d* + 5: 6 + 5 = 11 → 1 + 1 = **2**. **Kua 2 — West group.**
+
+**Male, born 2004.** Reduce: 0 + 4 = **4**. Male from 2000 on means 9 − *d*: 9 − 4 = **5**. But
+Kua 5 is never used — for a man it substitutes to **2**. **Kua 2 — West group.**
+
+The first walks the pre-2000 branch; the second walks the post-2000 branch *and* trips the Kua-5
+substitution. Now read the payoff from `data/reference/kua_table.json`: in Kua 2's row, **Sheng
+Qi is Northeast**. Two people born twenty-eight years apart, by different arithmetic paths,
+share the same prize direction — the table doing its job.
+
+⚠️ Two things `kua_number` will *refuse* to do, on purpose. It accepts solar years **1900–2099**
+only (the century constants — 10/5 before 2000, 9/6 after — are specific to those two
+centuries), and a **February birth given without a day is refused**, not guessed, because the
+~Feb-4 boundary falls mid-month. Both errors are the code being honest, not broken.
+
+## In practice today
+Practitioners triage by hours of exposure: **bed > desk > stove**. You spend a third of your
+life aligned with the bed, so it gets first claim; the desk comes second; the stove's facing,
+tied to the household's food and health, third.
+
+Couples in different groups are the classic hard case, with two working conventions. The
+traditional one: shared fixtures — the main door, and usually the bed — follow the
+**breadwinner's Kua**. The gentler modern one: optimize per sleeper, giving each person their
+own **head direction** where the room allows — accepting that one shared bed can't favor both,
+so someone compromises, and the practitioner says so out loud.
+
+And when a good direction is architecturally impossible, the answer is the **best available
+direction**: if the bed can't face Sheng Qi, take Tian Yi or Yan Nian, and above all keep it out
+of Jue Ming. Real practice is triage, not perfection — the best-to-gentlest ranking exists
+precisely so you know what to give up first.
+
 ## The metaphor 🏠
 Your Kua is like a **theater ticket with a seat assignment**. Everyone's in the same theater —
 the same eight directions, the same house — but your ticket says which seats give you the best

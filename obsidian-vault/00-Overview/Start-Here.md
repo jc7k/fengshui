@@ -19,6 +19,8 @@ openly disagree. Holding both at once is the mature way to study it.
   primers on the core ideas. Read each *before* the code that uses it.
 - **02 → 09** — one folder per module (Week 1 through the bonus). Each has:
   - `Module-Guide` — what you're doing this week and why
+  - a named **Background primer** (e.g. `Flying-Stars-Xuan-Kong`) — the history, Chinese
+    terminology, worked examples, and real-practice context behind the week; read it before the code
   - `Code-Checkpoint` — what "working code" looks like at this stage
   - `Lab-Notes` — prompts to fill in as you work
   - `Reflection` — what surprised you, what to ask a practitioner

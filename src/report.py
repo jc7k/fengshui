@@ -11,7 +11,9 @@ they disagree.
 Nothing here decides who is "right". That is not a bug. Feng shui is a family of
 traditions, not one measurable truth (see A-Note-on-Honesty in the vault).
 
-Primer: obsidian-vault/08-Week-7-8-Capstone/Module-Guide.md
+Primers:
+  obsidian-vault/08-Week-7-8-Capstone/Module-Guide.md
+  obsidian-vault/08-Week-7-8-Capstone/How-Practitioners-Reconcile-the-Schools.md
 """
 
 import eight_mansions

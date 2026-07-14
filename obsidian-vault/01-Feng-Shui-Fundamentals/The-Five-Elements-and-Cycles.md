@@ -57,3 +57,5 @@ The Week 2 notebook asserts this module reproduces the reference table exactly �
   do Fire and that element generate or control each other?
 
 ➡️ Next: [[The-Eight-Trigrams-and-Bagua|The Eight Trigrams & Bagua]].
+
+> Deep end: [[../03-Week-2-Elements-and-Bagua/Five-Elements-in-Depth-Wu-Xing|The Five Elements in Depth]] — the history, the weakening cycle, and the classic remedy move.

@@ -11,7 +11,9 @@ weighs a room's use, shape, and contents, not just its name. It is good enough t
 show the Five Elements doing visible work, and honest enough to admit it is a
 starting point, not a verdict.
 
-Primer: obsidian-vault/02-Week-1-Whole-Game/Module-Guide.md
+Primers:
+  obsidian-vault/02-Week-1-Whole-Game/Module-Guide.md
+  obsidian-vault/02-Week-1-Whole-Game/Feng-Shui-Origins-Wind-and-Water.md
 """
 
 import elements
