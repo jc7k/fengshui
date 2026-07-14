@@ -13,6 +13,38 @@ feng shui school, and tells you honestly where those schools *agree* and where t
 
 ---
 
+## Quick start 🚀 (Google Colab — nothing to install)
+
+You don't need Python, a terminal, or anything installed. Colab runs the notebooks in your
+browser with just your Google account.
+
+1. **Click this link:** [▶ Open Week 1 in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_1_Whole_Game.ipynb)
+2. **Sign in** with your Google account if Colab asks.
+3. If a warning says *"This notebook was not authored by Google"*, click **Run anyway** —
+   Colab says that about every notebook that comes from GitHub.
+4. In the menu, choose **Runtime → Run all** (or press `Shift+Enter` to run one cell at a
+   time, top to bottom). The first cell fetches the project's code for you — that's normal.
+5. To keep your changes: **File → Save a copy in Drive** (easiest), or
+   **File → Save a copy in GitHub** once your GitHub is set up
+   (see [GETTING_STARTED.md](GETTING_STARTED.md)).
+
+Each week, come back and open the next notebook the same way:
+
+| Week | Notebook |
+|---|---|
+| 1 — The Whole Game | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_1_Whole_Game.ipynb) |
+| 2 — Elements & Bagua | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_2_Elements_and_Bagua.ipynb) |
+| 3 — Eight Mansions | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_3_Eight_Mansions.ipynb) |
+| 4 — Flying Stars | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_4_Flying_Stars.ipynb) |
+| 5 — Form School | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_5_Form_School.ipynb) |
+| 6 — BTB Contrast | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_6_BTB_Contrast.ipynb) |
+| 7–8 — Capstone | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Week_7-8_Capstone.ipynb) |
+| Bonus — Ba Zi | [▶ open in Colab](https://colab.research.google.com/github/jc7k/fengshui/blob/main/notebooks/Bonus_BaZi.ipynb) |
+
+Stuck on anything at all? **Message Jeff.** That's the whole support plan, and it works. 😊
+
+---
+
 ## The big idea: the *Whole Game* first
 
 Most courses make you study theory for weeks before you build anything. We do the

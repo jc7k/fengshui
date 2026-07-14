@@ -66,7 +66,8 @@ def btb_overlay(door_wall):
 
     door_wall is one of 'north'/'south'/'east'/'west'. The BTB map always puts
     Career at the door's center and Knowledge/Career/Helpful-People along the
-    door wall; we rotate the reference grid so that wall lands on the right edge.
+    door wall; we rotate the reference grid so the door trio lands on that
+    wall's edge of our north-up grid.
     """
     grid = [row[:] for row in _BAGUA["btb_grid"]["rows"]]  # door at bottom row
     for _ in range(_DOOR_ROTATION[door_wall]):

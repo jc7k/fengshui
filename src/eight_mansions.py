@@ -42,12 +42,18 @@ def _reduce(n):
 def solar_year(year, month=None, day=None):
     """The feng shui (solar) year for a birth date.
 
-    Births before ~Feb 4 count as the previous year. If month/day are omitted we
+    Births before ~Feb 4 count as the previous year. If the month is omitted we
     take the year as given and leave the boundary to the user (an honest default,
-    not a silent guess).
+    not a silent guess). A month alone is decisive except in February, where the
+    day matters — a February birth without a day raises rather than guessing.
     """
-    if month is None or day is None:
+    if month is None:
         return year
+    if day is None:
+        if month == LICHUN_MONTH:
+            raise ValueError("a February birth sits on the ~Feb-4 Li Chun boundary; "
+                             "pass the day as well")
+        return year - 1 if month < LICHUN_MONTH else year
     if (month, day) < (LICHUN_MONTH, LICHUN_DAY):
         return year - 1
     return year
@@ -57,12 +63,17 @@ def kua_number(year, gender, month=None, day=None):
     """Kua / Ming Gua number (1-9) from birth year and gender ('male'/'female').
 
     gender is required because the traditional formula differs for men and women.
-    Pass month/day to apply the ~Feb-4 year boundary.
+    Pass month/day to apply the ~Feb-4 year boundary. Only solar years 1900-2099
+    are supported: the century constants below (10/5 and 9/6) are specific to the
+    1900s and 2000s, and other centuries would need their own pair.
     """
     if gender not in ("male", "female"):
         raise ValueError("gender must be 'male' or 'female'")
     male = gender == "male"
     y = solar_year(year, month, day)
+    if not 1900 <= y <= 2099:
+        raise ValueError(f"solar year {y} is outside 1900-2099, the range this "
+                         "formula's century constants cover")
     d = _reduce(y % 100)
     if y < 2000:
         raw = (10 - d) if male else (d + 5)
@@ -74,14 +85,28 @@ def kua_number(year, gender, month=None, day=None):
     return kua
 
 
+def _kua_directions(kua):
+    """The direction table for a Kua, with a clear error for values we don't chart."""
+    directions = _DIRECTIONS.get(str(kua))
+    if directions is None:
+        raise ValueError(f"no direction table for Kua {kua!r} — valid Kua are 1-4 and "
+                         "6-9 (Kua 5 substitutes to 2 for men / 8 for women; "
+                         "kua_number() does this for you)")
+    return directions
+
+
 def group(kua):
     """'East' or 'West' — the life group of a Kua number."""
-    return "East" if kua in GROUPS["East"] else "West"
+    if kua in GROUPS["East"]:
+        return "East"
+    if kua in GROUPS["West"]:
+        return "West"
+    raise ValueError(f"no life group for Kua {kua!r} — valid Kua are 1-4 and 6-9")
 
 
 def direction_quality(kua, direction):
     """The Eight Mansions quality (e.g. 'Sheng Qi', 'Jue Ming') of a direction for a Kua."""
-    return _DIRECTIONS[str(kua)][direction]
+    return _kua_directions(kua)[direction]
 
 
 def is_auspicious(kua, direction):
@@ -91,9 +116,9 @@ def is_auspicious(kua, direction):
 
 def good_directions(kua):
     """The four auspicious directions for a Kua, as {direction: quality}."""
-    return {d: q for d, q in _DIRECTIONS[str(kua)].items() if q in AUSPICIOUS}
+    return {d: q for d, q in _kua_directions(kua).items() if q in AUSPICIOUS}
 
 
 def bad_directions(kua):
     """The four inauspicious directions for a Kua, as {direction: quality}."""
-    return {d: q for d, q in _DIRECTIONS[str(kua)].items() if q not in AUSPICIOUS}
+    return {d: q for d, q in _kua_directions(kua).items() if q not in AUSPICIOUS}

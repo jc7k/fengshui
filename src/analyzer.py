@@ -32,6 +32,10 @@ def _area_grid(home, school):
     """The 3x3 life-area grid for the chosen school ('btb' or 'compass')."""
     if school == "btb":
         door = find_feature(home, "door")
+        if door is None:
+            raise ValueError("the BTB overlay is anchored to the front door, but this "
+                             "home has no 'door' feature — add one (see data/homes/*.json) "
+                             "or use school='compass'")
         return btb_overlay(door["wall"])
     if school == "compass":
         return compass_overlay()

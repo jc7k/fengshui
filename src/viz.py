@@ -11,7 +11,7 @@ is SOUTH; column 0 is WEST, the last column is EAST.
 
 import matplotlib.pyplot as plt
 
-from homes import grid_shape, thirds
+from homes import cell_at, find_feature, grid_shape, thirds
 
 # A soft color per element, for tinting sectors.
 ELEMENT_COLOR = {
@@ -27,7 +27,7 @@ def plot_home(home, ax=None):
         _, ax = plt.subplots(figsize=(4 + cols, 4 + rows))
     for r in range(rows):
         for c in range(cols):
-            label = home["grid"][r][c] if c < len(home["grid"][r]) else None
+            label = cell_at(home, r, c)
             y = rows - 1 - r  # flip so row 0 (north) is at the top
             if label is None:
                 ax.add_patch(plt.Rectangle((c, y), 1, 1, fc="none", ec="#cccccc",
@@ -35,7 +35,7 @@ def plot_home(home, ax=None):
                 continue
             ax.add_patch(plt.Rectangle((c, y), 1, 1, fc="#f5f5f5", ec="#555555"))
             ax.text(c + 0.5, y + 0.5, label, ha="center", va="center", fontsize=9)
-    door = next((f for f in home.get("features", []) if f["type"] == "door"), None)
+    door = find_feature(home, "door")
     if door:
         dr, dc = door["cell"]
         ax.plot(dc + 0.5, rows - 1 - dr + 0.5, "s", ms=14, mfc="none",
@@ -55,7 +55,7 @@ def plot_bagua_overlay(home, area_grid, title="Bagua overlay", ax=None):
     for r in range(rows):
         for c in range(cols):
             area = area_grid[row_g[r]][col_g[c]]
-            label = home["grid"][r][c] if c < len(home["grid"][r]) else None
+            label = cell_at(home, r, c)
             y = rows - 1 - r
             ax.add_patch(plt.Rectangle((c, y), 1, 1, fc="#fbf7ef", ec="#c99"))
             ax.text(c + 0.5, y + 0.72, area, ha="center", va="center", fontsize=8,

@@ -1,7 +1,7 @@
 {
   "name": "courtyard_L",
   "description": "An L-shaped flat with a missing northeast corner (a null cell). Feng shui calls a missing bagua sector a 'missing corner' — the Knowledge/Northeast area here is literally absent. Good for Week 5 Form-School geometry.",
-  "facing_degrees": 95.0,
+  "facing_degrees": 185.0,
   "construction_year": 2010,
   "grid": [
     ["office",  "living",  null],

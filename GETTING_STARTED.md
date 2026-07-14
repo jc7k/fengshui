@@ -41,19 +41,20 @@ link follows this pattern (notice your username and the file name in it):
 https://colab.research.google.com/github/YOUR-USERNAME/fengshui/blob/main/notebooks/Week_1_Whole_Game.ipynb
 ```
 
-> ⚠️ **Heads up:** in the starter notebooks the badge still says `REPLACE_WITH_YOUR_USERNAME`,
-> so it 404s until it's yours. Fix it with the same substitution as `GITHUB_USERNAME` below
-> (or paste the URL above by hand the first time). Once you **Save a copy in GitHub**, your
-> copy's badge works.
+> ✅ The badges in the starter notebooks already point at `jc7k/fengshui`, so they work
+> immediately — nothing to edit. If you make your own copy, swap in your username (in the
+> badge link and in `GITHUB_USERNAME` below) so you run *your* version.
 
 ### Step-by-step
 1. **Open the notebook:** click the "Open in Colab" badge.
-2. **Tell the notebook who you are:** the first code cell ("Environment bootstrap") has a line:
+2. **(Only if you made your own copy) tell the notebook who you are:** the first code cell
+   ("Environment bootstrap") has a line:
    ```python
-   GITHUB_USERNAME = "REPLACE_WITH_YOUR_USERNAME"
+   GITHUB_USERNAME = "jc7k"  # change this only if you saved your own copy of the repo
    ```
-   Change it to your real GitHub username. You only do this once per notebook. *(This lets the
-   notebook download the helper code in `src/` and the sample homes in `data/`.)*
+   Out of the box it fetches the helper code in `src/` and the sample homes in `data/` from
+   the original repo, so you can just run it. Once you have your own copy, put your username
+   here so the notebook runs *your* version.
 3. **Run it:** run the first cell, then the rest top to bottom with **Runtime → Run all**, or
    `Shift+Enter` cell by cell.
 
@@ -138,7 +139,7 @@ That's the whole loop. Repeat at your own pace.
 
 | Problem | Fix |
 |---|---|
-| `SystemExit: Set GITHUB_USERNAME…` | You didn't change `GITHUB_USERNAME` in the first cell. Set it and re-run. |
+| The bootstrap cell can't clone (404 / "not found") | `GITHUB_USERNAME` in the first cell doesn't match a real copy of the repo. Keep `jc7k` (the original), or set it to your exact username. |
 | `ModuleNotFoundError: No module named 'analyzer'` | The bootstrap cell didn't finish. Run it again (it clones the repo and adds `src/` to the path). |
 | A flying-star cell says "ambiguous — re-measure" | That's not a bug! One sample home faces a compass boundary on purpose, so the tool refuses. See Week 4. |
 | My changes disappeared | They weren't saved. Always **File → Save a copy in GitHub** before closing. |

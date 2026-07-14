@@ -5,8 +5,9 @@ This is the project's 'accuracy check': feng shui has no ML metric, so instead w
 assert that the code reproduces published reference tables (Kua directions, the
 Wu Xing cycles, real flying-star charts). Run it with:  python scripts/checks.py
 
-Every check prints a friendly line. A failing check raises, so the run stops with
-a clear traceback. The weekly notebooks re-run the checks relevant to their week.
+Every check prints a friendly line. A failing check prints ❌ and the run keeps
+going, then exits 1 at the end. The weekly notebooks re-run the checks relevant
+to their week.
 """
 
 import sys
@@ -50,9 +51,16 @@ check("compass overlay is 3x3", len(bagua.compass_overlay()) == 3
       and all(len(r) == 3 for r in bagua.compass_overlay()))
 check("BTB south-door bottom row is the door trio",
       bagua.btb_overlay("south")[2] == ["Knowledge", "Career", "Helpful People"])
+check("thirds() buckets by midpoint (2 rows reach south; 4 rows split 1/2/1)",
+      homes.thirds(2) == [0, 2] and homes.thirds(4) == [0, 1, 1, 2])
 
 # --- Compass / 24 mountains --------------------------------------------------
 check("178° is South", compass.direction_of(178) == "South")
+for _name in homes.list_homes():
+    _h = homes.load_home(_name)
+    check(f"{_name}: facing direction agrees with the door wall",
+          compass.direction_of(_h["facing_degrees"]).lower()
+          == homes.find_feature(_h, "door")["wall"])
 check("178° mountain is Wu", compass.mountain_of(178)["name"] == "Wu")
 check("172.4° flagged as boundary (ambiguous)", compass.is_boundary(172.4))
 check("178° not a boundary", not compass.is_boundary(178))
@@ -63,8 +71,20 @@ for ex in kua_ref["examples"]:
     m = eight_mansions.kua_number(ex["year"], "male")
     f = eight_mansions.kua_number(ex["year"], "female")
     check(f"Kua {ex['year']}: male={m} female={f}", m == ex["male"] and f == ex["female"])
-check("Li Chun boundary: Jan 1980 male counts as 1979 (Kua 4)",
+check("Li Chun boundary: Jan 1980 male counts as 1979 (Kua 3)",
       eight_mansions.kua_number(1980, "male", 1, 15) == eight_mansions.kua_number(1979, "male"))
+check("January alone (no day) is enough to count as the previous year",
+      eight_mansions.kua_number(1980, "male", 1) == eight_mansions.kua_number(1979, "male"))
+try:
+    eight_mansions.kua_number(1899, "male")
+    check("out-of-range year refused (formula covers 1900-2099)", False)
+except ValueError:
+    check("out-of-range year refused (formula covers 1900-2099)", True)
+try:
+    eight_mansions.direction_quality(5, "North")
+    check("Kua 5 gets a clear error pointing at the 2/8 substitution", False)
+except ValueError:
+    check("Kua 5 gets a clear error pointing at the 2/8 substitution", True)
 
 # --- Flying Stars (Week 4): reproduce published charts cell-for-cell ---------
 for ref in homes.load_reference("flying_star_charts")["charts"]:
@@ -94,6 +114,12 @@ check("room_areas labels every occupied room",
 check("naive_recommendations returns tips", len(naive_recommendations(studio)) >= 1)
 check("element_tips explain a relationship",
       all("relationship" in t for t in element_tips(studio)))
+no_door = dict(studio, features=[f for f in studio["features"] if f["type"] != "door"])
+try:
+    room_areas(no_door)
+    check("doorless home gets a clear BTB error, not a crash", False)
+except ValueError:
+    check("doorless home gets a clear BTB error, not a crash", True)
 
 # --- Capstone report (Weeks 7-8) --------------------------------------------
 occupants = [{"name": "A", "year": 1990, "gender": "female"}]
@@ -106,6 +132,14 @@ check("conflict table finds at least one school disagreement",
 edge = homes.load_home("edge_case_flat")
 check("edge_case_flat flying stars refuses (ambiguous facing)",
       report.full_report(edge)["flying_stars"]["ambiguous"] is True)
+old = dict(studio, construction_year=1850)
+check("pre-1864 home gets a flying-stars refusal, not a crash",
+      report.full_report(old)["flying_stars"]["chart"] is None)
+two = report.full_report(studio, [{"year": 1990, "gender": "female"},
+                                  {"year": 1961, "gender": "male"}])
+sector = next(r for r in two["conflict_table"] if r["direction"] != "Center")
+check("unnamed occupants both appear in the conflict table",
+      len(sector["eight_mansions"]) == 2)
 
 print()
 if _failures:

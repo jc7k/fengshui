@@ -27,10 +27,6 @@ _REPO = Path(__file__).resolve().parent.parent
 _HOMES_DIR = _REPO / "data" / "homes"
 _REFERENCE_DIR = _REPO / "data" / "reference"
 
-# The compass direction each grid EDGE points to, given our north-up convention.
-NORTH, SOUTH, WEST, EAST = "north", "south", "west", "east"
-
-
 def list_homes():
     """Names of every bundled sample home, sorted."""
     return sorted(p.stem for p in _HOMES_DIR.glob("*.json"))
@@ -60,10 +56,22 @@ def grid_shape(home):
 def thirds(n):
     """Map each of n row/column indices to a 3x3 sector group (0, 1, or 2).
 
-    A bagua overlay is always 3x3, but a grid can be any size, so we bucket its
-    rows and columns into three groups each. Returns a list of length n.
+    A bagua overlay is always 3x3, but a grid can be any size, so we bucket each
+    row/column into the third its MIDPOINT falls in — that keeps the mapping
+    symmetric (a 2-row home hits north and south; a 4-row home splits 1/2/1).
+    Returns a list of length n.
     """
-    return [min(2, i * 3 // n) for i in range(n)]
+    return [(2 * i + 1) * 3 // (2 * n) for i in range(n)]
+
+
+def cell_at(home, row, col):
+    """The room label at a grid cell, or None if the cell is missing.
+
+    Rows may be ragged (a short row means its tail cells are absent), so this is
+    the one safe way to index the grid — direct home["grid"][r][c] can IndexError.
+    """
+    grid_row = home["grid"][row]
+    return grid_row[col] if col < len(grid_row) else None
 
 
 def rooms(home):

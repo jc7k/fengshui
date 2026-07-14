@@ -19,7 +19,7 @@ Primer: obsidian-vault/06-Week-5-Form-School/Form-School-and-the-Four-Animals.md
 """
 
 from bagua import COMPASS_LAYOUT
-from homes import find_feature, grid_shape, thirds
+from homes import cell_at, find_feature, grid_shape, thirds
 
 
 def missing_corners(home):
@@ -34,8 +34,7 @@ def missing_corners(home):
     occupied = set()
     for r in range(rows):
         for c in range(cols):
-            label = home["grid"][r][c] if c < len(home["grid"][r]) else None
-            if label is not None:
+            if cell_at(home, r, c) is not None:
                 occupied.add(COMPASS_LAYOUT[row_group[r]][col_group[c]])
     all_sectors = {COMPASS_LAYOUT[rg][cg] for rg in row_group for cg in col_group}
     return sorted(all_sectors - occupied)

@@ -32,13 +32,20 @@ DISCLAIMER = (
 def _occupant_directions(occupants):
     """For each occupant, their Kua and East/West group."""
     result = []
-    for person in occupants or []:
+    seen = {}
+    for i, person in enumerate(occupants or []):
         kua = eight_mansions.kua_number(
             person["year"], person["gender"],
             person.get("month"), person.get("day"),
         )
+        # Names key the per-sector table in conflict_table, so they must be
+        # unique: default the nameless, and number duplicates.
+        name = person.get("name") or f"occupant {i + 1}"
+        count = seen[name] = seen.get(name, 0) + 1
+        if count > 1:
+            name = f"{name} ({count})"
         result.append({
-            "name": person.get("name", "?"),
+            "name": name,
             "kua": kua,
             "group": eight_mansions.group(kua),
         })
@@ -46,8 +53,11 @@ def _occupant_directions(occupants):
 
 
 def _flying_star_section(home):
-    """The natal chart, or an honest refusal if the facing is ambiguous."""
-    period = flying_stars.period_of(home["construction_year"])
+    """The natal chart, or an honest refusal if the year or facing can't be charted."""
+    try:
+        period = flying_stars.period_of(home["construction_year"])
+    except ValueError as exc:
+        return {"period": None, "chart": None, "ambiguous": True, "reason": str(exc)}
     try:
         chart = flying_stars.natal_chart(period, home["facing_degrees"])
         return {"period": period, "chart": chart, "ambiguous": False}
@@ -63,11 +73,19 @@ def conflict_table(home, occupants=None):
     direction, and each occupant's Eight Mansions quality there. 'conflict' is True
     when the compass and BTB schools label the same sector differently.
     """
+    return _conflict_rows(home, _flying_star_section(home), _occupant_directions(occupants))
+
+
+def _conflict_rows(home, stars, people):
+    """conflict_table's body, taking precomputed stars/people so full_report can
+    share one computation with its other sections."""
     door = find_feature(home, "door")
+    if door is None:
+        raise ValueError("the conflict table needs the BTB overlay, which is anchored "
+                         "to the front door — add a 'door' feature to this home "
+                         "(see data/homes/*.json)")
     btb = btb_overlay(door["wall"])
     compass_areas = compass_overlay()
-    stars = _flying_star_section(home)
-    people = _occupant_directions(occupants)
 
     rows = []
     for r in range(3):
@@ -95,10 +113,12 @@ def conflict_table(home, occupants=None):
 
 def full_report(home, occupants=None):
     """Run every lens on a home and return one structured, honest report."""
+    stars = _flying_star_section(home)
+    people = _occupant_directions(occupants)
     return {
         "home": home["name"],
-        "occupants": _occupant_directions(occupants),
-        "flying_stars": _flying_star_section(home),
+        "occupants": people,
+        "flying_stars": stars,
         "form": {
             "missing_corners": floorplan.missing_corners(home),
             "bed_command": floorplan.command_position(home, "bed"),
@@ -106,6 +126,6 @@ def full_report(home, occupants=None):
             "poison_arrows": floorplan.poison_arrows(home),
             "field_checklist": floorplan.field_checklist(),
         },
-        "conflict_table": conflict_table(home, occupants),
+        "conflict_table": _conflict_rows(home, stars, people),
         "disclaimer": DISCLAIMER,
     }

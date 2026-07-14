@@ -30,9 +30,6 @@ Primer: obsidian-vault/05-Week-4-Flying-Stars/Flying-Stars-Xuan-Kong.md
 """
 
 import compass
-from homes import load_reference
-
-_MOUNTAINS = load_reference("twenty_four_mountains")["mountains"]
 
 # Period (1-9) -> the 20-year block it covers. We are in Period 9: 2024-2043.
 PERIODS = {
@@ -53,9 +50,10 @@ OPPOSITE = {"North": "South", "South": "North", "East": "West", "West": "East",
 STAR_DIRECTION = {1: "North", 2: "Southwest", 3: "East", 4: "Southeast",
                   6: "Northwest", 7: "West", 8: "Northeast", 9: "South"}
 
-# polarity_at[direction][sub-index 1/2/3] -> "yang"/"yin"
+# polarity_at[direction][sub-index 1/2/3] -> "yang"/"yin", built from the same
+# mountains table compass.py already loaded (one source, one parse).
 polarity_at = {}
-for _m in _MOUNTAINS:
+for _m in compass.MOUNTAINS:
     polarity_at.setdefault(_m["direction"], {})[_m["index"]] = _m["polarity"]
 
 
