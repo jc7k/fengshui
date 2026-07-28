@@ -1,9 +1,16 @@
 # fengshui
 
-Python library computing traditional feng shui charts (bagua, bazi, flying stars,
-eight mansions) with notebooks and an Obsidian vault for written output.
+Two projects in one repo, disjoint on disk:
+
+1. **Python library** computing traditional feng shui charts (bagua, bazi, flying
+   stars, eight mansions) with notebooks and an Obsidian vault for written output.
+   Prior/reference work — kept working, not actively extended.
+2. **Expo app** (TypeScript, web-first) — the Feng Shui Room Layout Analyzer:
+   draw a room, place furniture, get rule-based feedback. Active development.
 
 ## Map
+
+**Python** (do not move; the app never imports from here)
 
 | Where | What |
 | --- | --- |
@@ -13,17 +20,35 @@ eight mansions) with notebooks and an Obsidian vault for written output.
 | `obsidian-vault/` | Written output |
 | `data/` | Reference fixtures |
 
+**Expo app**
+
+| Where | What |
+| --- | --- |
+| `app/` | Screens, file-based routing (Expo Router) |
+| `core/` | Data model + rule engine. Pure TypeScript — **zero UI or platform imports** |
+| `components/` | Shared UI |
+| `lib/` | Platform glue (Supabase client, analytics, storage) |
+| `app.json`, `metro.config.js`, `babel.config.js`, `tailwind.config.js` | Expo SDK 57 + NativeWind config |
+
 ## Commands
 
 ```bash
-.claude/scripts/verify.sh      # runs scripts/checks.py, prints a verdict
-python scripts/checks.py       # the same gate, full output
+.claude/scripts/verify.sh      # both gates, combined verdict
+python scripts/checks.py       # Python gate, full output
+npx tsc --noEmit               # TypeScript gate, full output
+npx expo start --web           # dev server at localhost:8081
+npx expo export --platform web # static export to dist/
 ```
 
-There are no unit tests. `scripts/checks.py` is the correctness gate: feng shui
-has no ML metric, so accuracy means reproducing published reference tables. A
-change that breaks a reference table is wrong, regardless of how reasonable the
-code looks.
+**Two gates, both must pass.**
+
+`scripts/checks.py` is the Python correctness gate: feng shui has no ML metric,
+so accuracy means reproducing published reference tables. A change that breaks a
+reference table is wrong, regardless of how reasonable the code looks.
+
+`tsc --noEmit` is the app's gate today. As `core/` grows a rule engine, its unit
+tests become the second half of that gate — `core/` is pure TypeScript precisely
+so it stays testable without a simulator or a browser.
 
 ## Working agreement
 
