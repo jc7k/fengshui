@@ -1,3 +1,4 @@
+import type { ItemBadge } from './findings-view';
 import type { FurnitureTransform, FurnitureType, Layout, WallPlacement } from '../core';
 
 /**
@@ -14,6 +15,8 @@ export interface RoomCanvasProps {
   snapEnabled: boolean;
   /** The type being dragged out of the palette, if any; a release drops it. */
   pendingDropType: FurnitureType | null;
+  /** Rule badges by furniture id (REQ-012). Items with nothing wrong are absent. */
+  badges: Record<string, ItemBadge>;
   onSelect: (id: string | null) => void;
   onMoveOpening: (id: string, placement: WallPlacement) => void;
   onDropFurniture: (type: FurnitureType, xCm: number, yCm: number) => void;

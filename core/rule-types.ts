@@ -79,6 +79,8 @@ export type TargetScope = readonly FurnitureType[] | 'all';
  */
 export interface RuleDefinition {
   id: string;
+  /** What the rule is called in front of a beginner, e.g. "Room to move". */
+  title: string;
   predicate: PredicateName;
   severity: Severity;
   roomTypes: RoomTypeScope;
@@ -122,6 +124,7 @@ export type CompiledPredicate = (
 /** A rule that is ready to run: copy, scope, and a closure over typed params. */
 export interface CompiledRule {
   id: string;
+  title: string;
   predicate: PredicateName;
   severity: Severity;
   roomTypes: RoomTypeScope;

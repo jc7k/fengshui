@@ -32,6 +32,7 @@ const SEVERITIES: readonly Severity[] = ['warning', 'tip'];
 
 const RULE_KEYS = [
   'id',
+  'title',
   'predicate',
   'severity',
   'roomTypes',
@@ -109,6 +110,7 @@ function compileRule(raw: unknown, index: number): CompiledRule | null {
 
   return {
     id: obj.id as string,
+    title: requireString(id, obj, 'title'),
     predicate: predicate as PredicateName,
     severity: severity as Severity,
     roomTypes: readScope(id, obj, 'roomTypes', ROOM_TYPES) as RoomTypeScope,
@@ -151,6 +153,17 @@ export const MVP_RULESET: Ruleset = loadRuleset(MVP_RULES_JSON.rules);
 
 /** Rule ids in evaluation order, for callers that need a stable checklist. */
 export const MVP_RULE_IDS: readonly string[] = MVP_RULESET.rules.map((r) => r.id);
+
+/**
+ * One rule by id, or `null`.
+ *
+ * The UI needs a rule's `title` to name a finding, and `Finding` deliberately
+ * carries only the five fields the PRD specifies — so the lookup lives here
+ * rather than being duplicated into every finding.
+ */
+export function ruleById(id: string, ruleset: Ruleset = MVP_RULESET): CompiledRule | null {
+  return ruleset.rules.find((r) => r.id === id) ?? null;
+}
 
 /** Room types this ruleset has something to say about. */
 export function rulesForRoomType(ruleset: Ruleset, roomType: RoomType): CompiledRule[] {

@@ -3,6 +3,7 @@
   "rules": [
     {
       "id": "command-position",
+      "title": "Where you can see the door",
       "predicate": "commandPosition",
       "severity": "warning",
       "roomTypes": ["bedroom", "living_room", "home_office"],
@@ -24,6 +25,7 @@
     },
     {
       "id": "coffin-position",
+      "title": "Bed facing the door",
       "predicate": "coffinPosition",
       "severity": "warning",
       "roomTypes": ["bedroom"],
@@ -38,6 +40,7 @@
     },
     {
       "id": "mirror-faces-bed",
+      "title": "Mirror facing the bed",
       "predicate": "facesBed",
       "severity": "warning",
       "roomTypes": ["bedroom"],
@@ -52,6 +55,7 @@
     },
     {
       "id": "clear-pathways",
+      "title": "Room to move",
       "predicate": "clearance",
       "severity": "warning",
       "roomTypes": "all",
@@ -85,6 +89,7 @@
     },
     {
       "id": "entrance-clarity",
+      "title": "A clear entrance",
       "predicate": "blocksSwing",
       "severity": "warning",
       "roomTypes": "all",
@@ -114,6 +119,7 @@
     },
     {
       "id": "back-support",
+      "title": "Support behind you",
       "predicate": "backToDoor",
       "severity": "tip",
       "roomTypes": ["living_room", "home_office"],
@@ -128,6 +134,7 @@
     },
     {
       "id": "proportion",
+      "title": "Fits the room",
       "predicate": "footprintShare",
       "severity": "warning",
       "roomTypes": "all",

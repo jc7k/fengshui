@@ -8,6 +8,7 @@ import type { RuleDefinition } from './rule-types';
 /** A minimal valid rule, so each test can break exactly one thing. */
 const def = (over: Partial<RuleDefinition> = {}): unknown => ({
   id: 'r',
+  title: 'A title',
   predicate: 'footprintShare',
   severity: 'warning',
   roomTypes: 'all',
@@ -122,7 +123,7 @@ describe('the shipped MVP ruleset', () => {
     // does not mean updating a golden nobody reads. When the domain expert
     // signs off, `draft` flips and this test fails loudly and correctly.
     for (const rule of MVP_RULESET.rules) {
-      for (const text of [rule.explanation, rule.fix]) {
+      for (const text of [rule.title, rule.explanation, rule.fix]) {
         expect(text.trim()).not.toBe('');
         expect(text).not.toContain('\n');
         expect(text.length).toBeLessThanOrEqual(120);

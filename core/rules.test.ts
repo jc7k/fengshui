@@ -200,6 +200,19 @@ describe('rule 2: coffin position', () => {
     expect(hits(evaluate(l, only('coffin-position')))).toEqual([]);
     expect(hits(evaluate(l, wide))).toEqual([['bed']]);
   });
+
+  it('clears the finding once the bed moves out of the corridor', () => {
+    // What REQ-012's live feedback rests on: the same rule flips from a finding
+    // to a pass on nothing but a new position, so re-evaluating a moved layout
+    // is all the UI has to do to retract a warning.
+    const before = run('coffin-position', layoutOf('bedroom', [bed({ xCm: 200, yCm: 200 })]));
+    expect(before.findings.map((f) => f.ruleId)).toEqual(['coffin-position']);
+
+    // x ∈ [30, 130], clear of the corridor x ∈ [160, 240].
+    const after = run('coffin-position', layoutOf('bedroom', [bed({ xCm: 80, yCm: 200 })]));
+    expect(after.findings).toEqual([]);
+    expect(after.passed).toEqual(['coffin-position']);
+  });
 });
 
 // ── Rule 3 — mirror facing the bed ─────────────────────────────────────────

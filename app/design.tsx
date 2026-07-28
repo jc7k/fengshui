@@ -10,11 +10,13 @@
  */
 import { ScrollView, Text, View } from 'react-native';
 
+import FeedbackPanel from '../components/feedback-panel';
 import FurnitureInspector from '../components/furniture-inspector';
 import FurniturePalette from '../components/furniture-palette';
 import OpeningsToolbar, { Button } from '../components/openings-toolbar';
 import RoomCanvas from '../components/room-canvas';
 import RoomSetupForm from '../components/room-setup-form';
+import { useFindings } from '../components/use-findings';
 import { useLayoutEditor } from '../components/use-layout-editor';
 import { usePaletteDrag } from '../components/use-palette-drag';
 import { createLayout, formatLength, toCm, type FurnitureType, type Layout } from '../core';
@@ -30,6 +32,9 @@ export default function DesignScreen() {
   const editor = useLayoutEditor(INITIAL);
   const drag = usePaletteDrag();
   const { layout, selectedId } = editor;
+  // Derived from `layout`, so every edit — including undo, redo and delete —
+  // updates the feedback with no explicit "check" action (REQ-012).
+  const feedback = useFindings(layout);
 
   /** Where a pressed — as opposed to dragged — chip puts its item. */
   const placeAtCentre = (type: FurnitureType) =>
@@ -105,6 +110,7 @@ export default function DesignScreen() {
           selectedId={selectedId}
           snapEnabled={editor.snapEnabled}
           pendingDropType={drag.pendingType}
+          badges={feedback.badges}
           onSelect={editor.select}
           onMoveOpening={editor.moveOpening}
           onDropFurniture={editor.placeFurniture}
@@ -115,6 +121,8 @@ export default function DesignScreen() {
           onEndEntry={editor.endEntry}
         />
       </View>
+
+      <FeedbackPanel view={feedback} onSelect={editor.select} />
     </ScrollView>
   );
 }

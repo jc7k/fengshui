@@ -11,13 +11,14 @@
 import { View, type PointerEvent } from 'react-native';
 
 import { eventPointToRoom } from './canvas-fit';
+import FindingBadges from './finding-badges';
 import FurnitureLabels from './furniture-labels';
 import RoomCanvasSkia from './room-canvas-skia';
 import { useMeasuredSize } from './use-measured-size';
 import type { RoomCanvasProps } from './room-canvas-props';
 
 export default function RoomCanvas(props: RoomCanvasProps) {
-  const { layout, pendingDropType, onDropFurniture } = props;
+  const { layout, badges, pendingDropType, onDropFurniture } = props;
   const { size, onLayout, measured } = useMeasuredSize();
 
   /**
@@ -45,6 +46,12 @@ export default function RoomCanvas(props: RoomCanvasProps) {
         <>
           <RoomCanvasSkia {...props} widthPx={size.width} heightPx={size.height} />
           <FurnitureLabels layout={layout} widthPx={size.width} heightPx={size.height} />
+          <FindingBadges
+            layout={layout}
+            badges={badges}
+            widthPx={size.width}
+            heightPx={size.height}
+          />
         </>
       ) : null}
     </View>
