@@ -21,6 +21,17 @@ export type RoomType =
   | 'bathroom'
   | 'other';
 
+/** Every room type, in the order the PRD lists them. */
+export const ROOM_TYPES: readonly RoomType[] = [
+  'bedroom',
+  'living_room',
+  'home_office',
+  'kitchen',
+  'dining_room',
+  'bathroom',
+  'other',
+];
+
 /** MVP furniture set (PRD §4.2). REQ-008 maps these to per-room-type palettes. */
 export type FurnitureType =
   // bedroom
