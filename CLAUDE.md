@@ -1,6 +1,59 @@
-# CLAUDE.md
+# fengshui
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+Python library computing traditional feng shui charts (bagua, bazi, flying stars,
+eight mansions) with notebooks and an Obsidian vault for written output.
+
+## Map
+
+| Where | What |
+| --- | --- |
+| `src/` | The library. One module per system: `bagua`, `bazi`, `compass`, `eight_mansions`, `elements`, `flying_stars`, `floorplan`, `homes`, `analyzer`, `report`, `viz` |
+| `scripts/checks.py` | The accuracy gate — asserts the code reproduces published reference tables |
+| `notebooks/` | Weekly notebooks; each re-runs the checks relevant to its week |
+| `obsidian-vault/` | Written output |
+| `data/` | Reference fixtures |
+
+## Commands
+
+```bash
+.claude/scripts/verify.sh      # runs scripts/checks.py, prints a verdict
+python scripts/checks.py       # the same gate, full output
+```
+
+There are no unit tests. `scripts/checks.py` is the correctness gate: feng shui
+has no ML metric, so accuracy means reproducing published reference tables. A
+change that breaks a reference table is wrong, regardless of how reasonable the
+code looks.
+
+## Working agreement
+
+**Read narrowly.** Search for the specific symbol rather than reading whole
+modules.
+
+**Route by task class.** Judgment work — interpreting a system, resolving
+conflicting sources, design — stays on the main model. Mechanical work with the
+decision already made goes to the `grunt` subagent. Self-contained, verifiable
+grinds go to Codex via `/delegate`, billed to the ChatGPT quota instead of this
+one.
+
+**Verify with scripts, not by reading.** Run `.claude/scripts/verify.sh` after
+changes. Never conclude the charts are right by re-reading the code.
+
+**Say what happened.** If a reference check fails, show the failure. If a step
+was skipped, say so.
+
+**Keep answers proportionate.** Short answers for short questions, no preamble.
+Brief in prose, never brief in analysis.
+
+## Session hygiene
+
+- `/clear` when switching tasks. Run `/handoff` first if the thread matters.
+- `/compact` around 60% context (the status line turns amber).
+- Above 80% (red): `/handoff` then `/clear`.
+
+---
+
+Behavioral guidelines to reduce common LLM coding mistakes.
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
@@ -48,18 +101,13 @@ The test: Every changed line should trace directly to the user's request.
 
 Transform tasks into verifiable goals:
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
+- "Fix the bug" → "Write a check that reproduces it, then make it pass"
+- "Refactor X" → "Ensure `verify.sh` passes before and after"
 
 For multi-step tasks, state a brief plan:
 ```
 1. [Step] → verify: [check]
 2. [Step] → verify: [check]
-3. [Step] → verify: [check]
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
----
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
