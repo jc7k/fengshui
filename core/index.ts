@@ -7,3 +7,8 @@ export * from './furniture';
 export * from './grid';
 export * from './manipulate';
 export * from './layout-ops';
+export * from './rule-types';
+export * from './rule-geometry';
+export * from './predicates';
+export * from './ruleset';
+export * from './evaluate';

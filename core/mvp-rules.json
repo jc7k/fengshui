@@ -1,0 +1,157 @@
+{
+  "note": "The seven MVP Feng Shui rules (PRD §4.3). Numbers, lists and copy are yours to change; see docs/rule-authoring.md for what needs a developer and what does not. Every 'explanation' and 'fix' below is a developer-written draft awaiting review — that is what draft:true means.",
+  "rules": [
+    {
+      "id": "command-position",
+      "predicate": "commandPosition",
+      "severity": "warning",
+      "roomTypes": ["bedroom", "living_room", "home_office"],
+      "targets": ["bed", "desk", "sofa"],
+      "params": {
+        "alignmentWidthFactor": 1.0,
+        "sightBlockerIgnoreTypes": [
+          "rug",
+          "mirror",
+          "artwork",
+          "coffee_table",
+          "lamp",
+          "nightstand"
+        ]
+      },
+      "explanation": "The commanding position lets you see the door without sitting in its direct path, so nothing arrives unannounced.",
+      "fix": "Move it so the door is visible on a diagonal, clear of the door's straight line.",
+      "draft": true
+    },
+    {
+      "id": "coffin-position",
+      "predicate": "coffinPosition",
+      "severity": "warning",
+      "roomTypes": ["bedroom"],
+      "targets": ["bed"],
+      "params": {
+        "angleToleranceDeg": 20,
+        "alignmentWidthFactor": 1.0
+      },
+      "explanation": "A bed whose foot points straight out the door echoes how the dead are carried out, and rest suffers for it.",
+      "fix": "Shift the bed off the door's line, or turn it so the foot no longer aims at the doorway.",
+      "draft": true
+    },
+    {
+      "id": "mirror-faces-bed",
+      "predicate": "facesBed",
+      "severity": "warning",
+      "roomTypes": ["bedroom"],
+      "targets": ["mirror"],
+      "params": {
+        "maxRangeCm": 600,
+        "reflectedTypes": ["bed"]
+      },
+      "explanation": "A mirror facing the bed is said to disturb sleep by reflecting and doubling the activity of the room.",
+      "fix": "Turn the mirror away from the bed, move it to another wall, or cover it at night.",
+      "draft": true
+    },
+    {
+      "id": "clear-pathways",
+      "predicate": "clearance",
+      "severity": "warning",
+      "roomTypes": "all",
+      "targets": [
+        "bed",
+        "nightstand",
+        "dresser",
+        "mirror",
+        "desk",
+        "sofa",
+        "armchair",
+        "coffee_table",
+        "tv_stand",
+        "bookshelf",
+        "chair",
+        "filing_cabinet",
+        "plant",
+        "lamp"
+      ],
+      "params": {
+        "minClearanceCm": 60,
+        "ignoreBelowCm": 10,
+        "entryDepthCm": 120,
+        "entryWidthFactor": 1.0,
+        "mode": "both",
+        "walkwayIgnoreTypes": ["nightstand", "chair", "lamp", "rug", "artwork"]
+      },
+      "explanation": "People and energy both need room to move; a blocked entry or a pinched walkway makes a room feel stuck.",
+      "fix": "Clear the path in from the door and leave at least 60 cm between pieces you walk between.",
+      "draft": true
+    },
+    {
+      "id": "entrance-clarity",
+      "predicate": "blocksSwing",
+      "severity": "warning",
+      "roomTypes": "all",
+      "targets": [
+        "bed",
+        "nightstand",
+        "dresser",
+        "mirror",
+        "desk",
+        "sofa",
+        "armchair",
+        "coffee_table",
+        "tv_stand",
+        "bookshelf",
+        "chair",
+        "filing_cabinet",
+        "plant",
+        "lamp"
+      ],
+      "params": {
+        "thresholdDepthCm": 60,
+        "doorScope": "all"
+      },
+      "explanation": "The entrance is where energy enters a room, and anything in the door's swing or just inside it narrows that flow.",
+      "fix": "Move the item clear of the door's swing and leave the space just inside the doorway open.",
+      "draft": true
+    },
+    {
+      "id": "back-support",
+      "predicate": "backToDoor",
+      "severity": "tip",
+      "roomTypes": ["living_room", "home_office"],
+      "targets": ["chair", "sofa"],
+      "params": {
+        "angleToleranceDeg": 45,
+        "doorScope": "main"
+      },
+      "explanation": "Sitting with your back to the door means you cannot see who approaches, which quietly undermines focus and ease.",
+      "fix": "Turn the seat so the door is in view, or place a solid wall or high back behind it.",
+      "draft": true
+    },
+    {
+      "id": "proportion",
+      "predicate": "footprintShare",
+      "severity": "warning",
+      "roomTypes": "all",
+      "targets": [
+        "bed",
+        "nightstand",
+        "dresser",
+        "mirror",
+        "desk",
+        "sofa",
+        "armchair",
+        "coffee_table",
+        "tv_stand",
+        "bookshelf",
+        "chair",
+        "filing_cabinet",
+        "plant"
+      ],
+      "params": {
+        "maxShare": 0.4
+      },
+      "explanation": "One piece dominating the floor crowds a room and leaves the other elements no space to balance it.",
+      "fix": "Swap in a smaller piece, or move this one to a room it does not dominate.",
+      "draft": true
+    }
+  ]
+}
