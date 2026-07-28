@@ -11,12 +11,19 @@
  * left to the UI to remember — deleting the main door must promote another one.
  */
 
+import { normalizeAngle } from './grid';
 import type { Door, FurnitureItem, Layout, Window } from './types';
 import type { WallPlacement } from './walls';
 
 /** Standard opening sizes, cm. Roughly a 32" door and a 4' window. */
 export const DEFAULT_DOOR_WIDTH_CM = 81;
 export const DEFAULT_WINDOW_WIDTH_CM = 120;
+
+/** No furniture is smaller than this, cm. Below it an item is unhittable. */
+export const MIN_FURNITURE_CM = 20;
+
+const clamp = (value: number, min: number, max: number): number =>
+  Math.min(max, Math.max(min, value));
 
 /**
  * Restore the exactly-one-main-door invariant.
@@ -122,4 +129,88 @@ export function addFurniture(layout: Layout, item: FurnitureItem): Layout {
 
 export function removeFurniture(layout: Layout, id: string): Layout {
   return { ...layout, furniture: layout.furniture.filter((f) => f.id !== id) };
+}
+
+/** Patch one item. Unknown ids are a no-op, as with the opening ops. */
+function updateFurniture(
+  layout: Layout,
+  id: string,
+  patch: Partial<FurnitureItem>,
+): Layout {
+  return {
+    ...layout,
+    furniture: layout.furniture.map((f) => (f.id === id ? { ...f, ...patch } : f)),
+  };
+}
+
+/**
+ * Move an item's centre.
+ *
+ * The *centre* is clamped to the room, not the item's footprint: a dresser is
+ * allowed to overhang a wall, which is how a user says "against the wall", but
+ * nothing can be dragged past the edge and lost somewhere off-canvas with no
+ * way to select it again.
+ */
+export function moveFurniture(layout: Layout, id: string, xCm: number, yCm: number): Layout {
+  return updateFurniture(layout, id, {
+    xCm: clamp(xCm, 0, layout.room.widthCm),
+    yCm: clamp(yCm, 0, layout.room.lengthCm),
+  });
+}
+
+/** Position and size together — what a corner drag produces. */
+export interface FurnitureTransform {
+  xCm: number;
+  yCm: number;
+  widthCm: number;
+  depthCm: number;
+}
+
+/**
+ * Reposition and resize in one go.
+ *
+ * A corner drag moves the centre and changes the extents at the same time, and
+ * this is deliberately a single operation rather than a move followed by a
+ * resize: REQ-009's undo stack counts state transitions, and one drag should be
+ * one undo. Same centre clamp as `moveFurniture`, and extents floor at
+ * `MIN_FURNITURE_CM`.
+ */
+export function transformFurniture(
+  layout: Layout,
+  id: string,
+  transform: FurnitureTransform,
+): Layout {
+  return updateFurniture(layout, id, {
+    xCm: clamp(transform.xCm, 0, layout.room.widthCm),
+    yCm: clamp(transform.yCm, 0, layout.room.lengthCm),
+    widthCm: Math.max(MIN_FURNITURE_CM, transform.widthCm),
+    depthCm: Math.max(MIN_FURNITURE_CM, transform.depthCm),
+  });
+}
+
+/** Set an item's rotation, folded into [0, 360). */
+export function rotateFurniture(layout: Layout, id: string, rotationDeg: number): Layout {
+  return updateFurniture(layout, id, { rotationDeg: normalizeAngle(rotationDeg) });
+}
+
+/**
+ * Name an item, or clear its name.
+ *
+ * Clearing removes the key rather than storing `""`: `types.ts` requires the
+ * layout to round-trip through JSON unchanged, and "unset" has exactly one
+ * representation there — absent.
+ */
+export function labelFurniture(layout: Layout, id: string, label: string): Layout {
+  return {
+    ...layout,
+    furniture: layout.furniture.map((f) => {
+      if (f.id !== id) return f;
+      if (label.trim() === '') {
+        const cleared: FurnitureItem = { ...f };
+        delete cleared.label;
+        return cleared;
+      }
+      return { ...f, label };
+    }),
+  };
 }

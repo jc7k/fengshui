@@ -1,17 +1,28 @@
 import { describe, expect, it } from 'vitest';
 
+import { createFurnitureItem } from './furniture';
 import {
   addDoor,
+  addFurniture,
   addWindow,
   ensureMainDoor,
+  labelFurniture,
+  MIN_FURNITURE_CM,
+  moveFurniture,
   moveOpening,
+  removeFurniture,
   removeOpening,
+  rotateFurniture,
   setMainDoor,
   toggleDoorSwing,
+  transformFurniture,
 } from './layout-ops';
 import { createLayout, mainDoor, type Layout } from './types';
 
 const base = (): Layout => createLayout('bedroom', { widthCm: 400, lengthCm: 300 });
+
+/** A room with one bed, centred, for the furniture ops below. */
+const withBed = (): Layout => addFurniture(base(), createFurnitureItem('f1', 'bed', 200, 150));
 
 describe('adding openings', () => {
   it('auto-designates the first door as main', () => {
@@ -153,6 +164,123 @@ describe('moving and deleting', () => {
   });
 });
 
+describe('moving furniture', () => {
+  it('moves an item by its centre', () => {
+    const l = moveFurniture(withBed(), 'f1', 120, 90);
+    expect(l.furniture[0]).toMatchObject({ xCm: 120, yCm: 90 });
+  });
+
+  it('clamps the centre to the room so an item can never be dragged away', () => {
+    // The footprint may overhang — that is how a user says "against the wall" —
+    // but a centre outside the room is an item that can no longer be selected.
+    const l = moveFurniture(withBed(), 'f1', 9000, -9000);
+    expect(l.furniture[0]).toMatchObject({ xCm: 400, yCm: 0 });
+  });
+
+  it('lets an item sit flush in a corner, overhanging two walls', () => {
+    const l = moveFurniture(withBed(), 'f1', 0, 0);
+    expect(l.furniture[0]).toMatchObject({ xCm: 0, yCm: 0 });
+  });
+});
+
+describe('transforming furniture', () => {
+  it('moves and resizes in a single operation', () => {
+    // One corner drag is one state transition, which is what REQ-009 undoes.
+    const l = transformFurniture(withBed(), 'f1', {
+      xCm: 100,
+      yCm: 80,
+      widthCm: 160,
+      depthCm: 120,
+    });
+    expect(l.furniture[0]).toMatchObject({ xCm: 100, yCm: 80, widthCm: 160, depthCm: 120 });
+  });
+
+  it('floors both extents at MIN_FURNITURE_CM', () => {
+    const l = transformFurniture(withBed(), 'f1', { xCm: 200, yCm: 150, widthCm: 1, depthCm: -30 });
+    expect(l.furniture[0].widthCm).toBe(MIN_FURNITURE_CM);
+    expect(l.furniture[0].depthCm).toBe(MIN_FURNITURE_CM);
+  });
+
+  it('clamps the centre the same way a move does', () => {
+    const l = transformFurniture(withBed(), 'f1', {
+      xCm: -50,
+      yCm: 9000,
+      widthCm: 100,
+      depthCm: 100,
+    });
+    expect(l.furniture[0]).toMatchObject({ xCm: 0, yCm: 300 });
+  });
+
+  it('leaves the rotation and label untouched', () => {
+    let l = rotateFurniture(labelFurniture(withBed(), 'f1', 'Guest bed'), 'f1', 90);
+    l = transformFurniture(l, 'f1', { xCm: 100, yCm: 100, widthCm: 90, depthCm: 90 });
+    expect(l.furniture[0]).toMatchObject({ rotationDeg: 90, label: 'Guest bed' });
+  });
+});
+
+describe('rotating furniture', () => {
+  it('sets the rotation', () => {
+    expect(rotateFurniture(withBed(), 'f1', 90).furniture[0].rotationDeg).toBe(90);
+  });
+
+  it('folds a rotation past a full turn back into range', () => {
+    expect(rotateFurniture(withBed(), 'f1', 370).furniture[0].rotationDeg).toBe(10);
+  });
+
+  it('folds a negative rotation into the positive range', () => {
+    expect(rotateFurniture(withBed(), 'f1', -10).furniture[0].rotationDeg).toBe(350);
+  });
+});
+
+describe('labelling furniture', () => {
+  it('sets a label', () => {
+    expect(labelFurniture(withBed(), 'f1', "Kid's bed").furniture[0].label).toBe("Kid's bed");
+  });
+
+  it('removes the key for an empty label rather than storing an empty string', () => {
+    // types.ts allows exactly one representation of "unset": absent.
+    const l = labelFurniture(labelFurniture(withBed(), 'f1', 'Bed'), 'f1', '');
+    expect('label' in l.furniture[0]).toBe(false);
+  });
+
+  it('treats a whitespace-only label as clearing it', () => {
+    const l = labelFurniture(labelFurniture(withBed(), 'f1', 'Bed'), 'f1', '   ');
+    expect('label' in l.furniture[0]).toBe(false);
+  });
+});
+
+describe('the furniture ops as a family', () => {
+  it('ignores unknown ids', () => {
+    const l = withBed();
+    expect(moveFurniture(l, 'nope', 10, 10)).toEqual(l);
+    expect(transformFurniture(l, 'nope', { xCm: 1, yCm: 1, widthCm: 1, depthCm: 1 })).toEqual(l);
+    expect(rotateFurniture(l, 'nope', 45)).toEqual(l);
+    expect(labelFurniture(l, 'nope', 'x')).toEqual(l);
+    expect(removeFurniture(l, 'nope')).toEqual(l);
+  });
+
+  it('never mutates the layout it was given', () => {
+    const before = labelFurniture(withBed(), 'f1', 'Bed');
+    const snapshot = JSON.stringify(before);
+    moveFurniture(before, 'f1', 10, 10);
+    transformFurniture(before, 'f1', { xCm: 1, yCm: 1, widthCm: 50, depthCm: 50 });
+    rotateFurniture(before, 'f1', 45);
+    labelFurniture(before, 'f1', '');
+    removeFurniture(before, 'f1');
+    expect(JSON.stringify(before)).toBe(snapshot);
+  });
+
+  it('leaves other items alone', () => {
+    let l = addFurniture(withBed(), createFurnitureItem('f2', 'nightstand', 40, 40));
+    l = moveFurniture(l, 'f1', 10, 10);
+    expect(l.furniture[1]).toMatchObject({ id: 'f2', xCm: 40, yCm: 40 });
+  });
+
+  it('deletes an item', () => {
+    expect(removeFurniture(withBed(), 'f1').furniture).toHaveLength(0);
+  });
+});
+
 describe('persistence', () => {
   it('round-trips a layout with openings through JSON', () => {
     let l = addDoor(base(), 'd1', { wall: 'north', offsetCm: 100 });
@@ -161,5 +289,19 @@ describe('persistence', () => {
     const restored: Layout = JSON.parse(JSON.stringify(l));
     expect(restored).toEqual(l);
     expect(mainDoor(restored)?.id).toBe('d1');
+  });
+
+  it('round-trips a layout with furniture through JSON', () => {
+    let l = addDoor(withBed(), 'd1', { wall: 'north', offsetCm: 100 });
+    l = addFurniture(l, createFurnitureItem('f2', 'mirror', 30.48, 60.96));
+    l = rotateFurniture(l, 'f1', 370);
+    l = labelFurniture(l, 'f1', 'Main bed');
+    l = transformFurniture(l, 'f2', { xCm: 30.48, yCm: 60.96, widthCm: 60.5, depthCm: 20 });
+
+    const restored: Layout = JSON.parse(JSON.stringify(l));
+    expect(restored).toEqual(l);
+    expect(restored.furniture[0].label).toBe('Main bed');
+    expect(restored.furniture[0].rotationDeg).toBe(10);
+    expect('label' in restored.furniture[1]).toBe(false);
   });
 });

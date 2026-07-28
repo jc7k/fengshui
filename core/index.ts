@@ -3,4 +3,7 @@ export * from './types';
 export * from './geometry';
 export * from './scale';
 export * from './walls';
+export * from './furniture';
+export * from './grid';
+export * from './manipulate';
 export * from './layout-ops';

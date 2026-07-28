@@ -1,4 +1,4 @@
-import type { Layout, WallPlacement } from '../core';
+import type { FurnitureTransform, FurnitureType, Layout, WallPlacement } from '../core';
 
 /**
  * The canvas contract, shared by the web and native implementations.
@@ -10,6 +10,14 @@ import type { Layout, WallPlacement } from '../core';
 export interface RoomCanvasProps {
   layout: Layout;
   selectedId: string | null;
+  /** Whether drags snap to the grid — a view preference, not part of `Layout`. */
+  snapEnabled: boolean;
+  /** The type being dragged out of the palette, if any; a release drops it. */
+  pendingDropType: FurnitureType | null;
   onSelect: (id: string | null) => void;
   onMoveOpening: (id: string, placement: WallPlacement) => void;
+  onDropFurniture: (type: FurnitureType, xCm: number, yCm: number) => void;
+  onMoveFurniture: (id: string, xCm: number, yCm: number) => void;
+  onTransformFurniture: (id: string, transform: FurnitureTransform) => void;
+  onRotateFurniture: (id: string, rotationDeg: number) => void;
 }
