@@ -33,22 +33,27 @@ Two projects in one repo, disjoint on disk:
 ## Commands
 
 ```bash
-.claude/scripts/verify.sh      # both gates, combined verdict
+.claude/scripts/verify.sh      # all gates, combined verdict
 python scripts/checks.py       # Python gate, full output
 npx tsc --noEmit               # TypeScript gate, full output
+npm test                       # core purity check + Vitest, full output
 npx expo start --web           # dev server at localhost:8081
 npx expo export --platform web # static export to dist/
 ```
 
-**Two gates, both must pass.**
+**Three gates, all must pass.**
 
 `scripts/checks.py` is the Python correctness gate: feng shui has no ML metric,
 so accuracy means reproducing published reference tables. A change that breaks a
 reference table is wrong, regardless of how reasonable the code looks.
 
-`tsc --noEmit` is the app's gate today. As `core/` grows a rule engine, its unit
-tests become the second half of that gate — `core/` is pure TypeScript precisely
-so it stays testable without a simulator or a browser.
+`tsc --noEmit` covers the app.
+
+`npm test` runs `tools/check-core-purity.mjs` and then Vitest over `core/`. The
+purity check fails the build if anything in `core/` imports React, React Native,
+Skia, Expo or Supabase — that separation is what keeps the rule engine testable
+without a simulator and reusable on iOS and server-side, and it is easy to lose
+to one convenient import.
 
 ## Working agreement
 
