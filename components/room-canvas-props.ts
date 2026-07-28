@@ -20,4 +20,7 @@ export interface RoomCanvasProps {
   onMoveFurniture: (id: string, xCm: number, yCm: number) => void;
   onTransformFurniture: (id: string, transform: FurnitureTransform) => void;
   onRotateFurniture: (id: string, rotationDeg: number) => void;
+  /** Opens and closes the one undo entry a whole drag is worth (REQ-009). */
+  onBeginEntry: () => void;
+  onEndEntry: () => void;
 }

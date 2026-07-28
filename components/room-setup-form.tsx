@@ -38,6 +38,12 @@ export interface RoomSetupFormProps {
   onChangeRoomType: (type: RoomType) => void;
   onChangeDimensions: (widthCm: number, lengthCm: number) => void;
   onChangeUnit: (unit: Unit) => void;
+  /**
+   * One undo entry per dimension the user edits, rather than one per keystroke —
+   * typing "12" commits at 1 and then 12 (REQ-009).
+   */
+  onBeginEntry: () => void;
+  onEndEntry: () => void;
 }
 
 export default function RoomSetupForm({
@@ -48,6 +54,8 @@ export default function RoomSetupForm({
   onChangeRoomType,
   onChangeDimensions,
   onChangeUnit,
+  onBeginEntry,
+  onEndEntry,
 }: RoomSetupFormProps) {
   const [widthText, setWidthText] = useState(() => display(widthCm, unit));
   const [lengthText, setLengthText] = useState(() => display(lengthCm, unit));
@@ -104,6 +112,8 @@ export default function RoomSetupForm({
             accessibilityLabel="Room width"
             value={widthText}
             inputMode="decimal"
+            onFocus={onBeginEntry}
+            onBlur={onEndEntry}
             onChangeText={(t) => {
               setWidthText(t);
               commit(t, lengthText);
@@ -116,6 +126,8 @@ export default function RoomSetupForm({
             accessibilityLabel="Room length"
             value={lengthText}
             inputMode="decimal"
+            onFocus={onBeginEntry}
+            onBlur={onEndEntry}
             onChangeText={(t) => {
               setLengthText(t);
               commit(widthText, t);

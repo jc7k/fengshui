@@ -12,7 +12,7 @@ import { ScrollView, Text, View } from 'react-native';
 
 import FurnitureInspector from '../components/furniture-inspector';
 import FurniturePalette from '../components/furniture-palette';
-import OpeningsToolbar from '../components/openings-toolbar';
+import OpeningsToolbar, { Button } from '../components/openings-toolbar';
 import RoomCanvas from '../components/room-canvas';
 import RoomSetupForm from '../components/room-setup-form';
 import { useLayoutEditor } from '../components/use-layout-editor';
@@ -48,7 +48,16 @@ export default function DesignScreen() {
         onChangeRoomType={editor.setRoomType}
         onChangeDimensions={editor.setDimensions}
         onChangeUnit={editor.setUnit}
+        onBeginEntry={editor.beginEntry}
+        onEndEntry={editor.endEntry}
       />
+
+      {/* Undo/redo (PRD §4.2), borrowing the openings toolbar's button so the
+          controls above and below the canvas look like one set. */}
+      <View className="flex-row items-center gap-2 px-4">
+        <Button testID="undo" label="Undo" onPress={editor.undo} disabled={!editor.canUndo} />
+        <Button testID="redo" label="Redo" onPress={editor.redo} disabled={!editor.canRedo} />
+      </View>
 
       <OpeningsToolbar
         layout={layout}
@@ -78,6 +87,8 @@ export default function DesignScreen() {
           onTransform={(transform) => editor.transformFurniture(selectedItem.id, transform)}
           onRotate={(deg) => editor.rotateFurniture(selectedItem.id, deg)}
           onDelete={editor.deleteSelected}
+          onBeginEntry={editor.beginEntry}
+          onEndEntry={editor.endEntry}
         />
       ) : null}
 
@@ -100,6 +111,8 @@ export default function DesignScreen() {
           onMoveFurniture={editor.moveFurniture}
           onTransformFurniture={editor.transformFurniture}
           onRotateFurniture={editor.rotateFurniture}
+          onBeginEntry={editor.beginEntry}
+          onEndEntry={editor.endEntry}
         />
       </View>
     </ScrollView>

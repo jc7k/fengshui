@@ -88,6 +88,9 @@ export interface CanvasDragOptions {
   onMoveFurniture: (id: string, xCm: number, yCm: number) => void;
   onTransformFurniture: (id: string, transform: FurnitureTransform) => void;
   onRotateFurniture: (id: string, rotationDeg: number) => void;
+  /** Opens and closes the one undo entry a whole drag is worth (REQ-009). */
+  onBeginEntry: () => void;
+  onEndEntry: () => void;
 }
 
 export function useCanvasDrag(options: CanvasDragOptions) {
@@ -102,7 +105,12 @@ export function useCanvasDrag(options: CanvasDragOptions) {
       Gesture.Pan()
         .runOnJS(true)
         .onBegin((e) => {
-          const { layout: l, fit: f, selectedId, onSelect } = latest.current;
+          const { layout: l, fit: f, selectedId, onSelect, onBeginEntry } = latest.current;
+          // Open the drag's undo entry before the hit tests rather than only on
+          // the branches that grab something. A scope that changes nothing
+          // records nothing, so the tap-on-empty-canvas case needs no gate here —
+          // and `onSelect` below is not undoable either way.
+          onBeginEntry();
           const p = pxPointToRoom(e.x, e.y, f);
           const point = { x: p.xCm, y: p.yCm };
 
@@ -206,10 +214,11 @@ export function useCanvasDrag(options: CanvasDragOptions) {
             }
           }
         })
-        // The end of a drag, and therefore where REQ-009 will close one undo
-        // entry — however many `onUpdate`s it took.
+        // The end of a drag, and therefore where its one undo entry closes —
+        // however many `onUpdate`s it took.
         .onFinalize(() => {
           dragging.current = null;
+          latest.current.onEndEntry();
         }),
     [],
   );

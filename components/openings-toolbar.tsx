@@ -19,7 +19,8 @@ export interface OpeningsToolbarProps {
   onToggleSwing: () => void;
 }
 
-function Button({
+/** Exported for the undo/redo pair on the design screen, so the two rows match. */
+export function Button({
   testID,
   label,
   onPress,

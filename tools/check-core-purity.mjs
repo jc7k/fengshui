@@ -28,6 +28,9 @@ const BANNED = [
   'nativewind',
   '@shopify/react-native-skia',
   '@supabase/supabase-js',
+  // The app's state container (REQ-009). core/ is called by the store, never the
+  // other way round, or the rule engine stops being usable without one.
+  'zustand',
 ];
 
 /** Allowed despite matching a banned prefix — test tooling only. */

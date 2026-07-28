@@ -34,9 +34,15 @@ function display(cm: number, unit: Unit): string {
   return String(Number(fromCm(cm, unit).toFixed(2)));
 }
 
-/** What the inputs are currently showing, so an outside edit can be spotted. */
+/**
+ * What the inputs are currently showing, so an outside edit can be spotted.
+ *
+ * The label is in here as well as the sizes, because an undo is an outside edit
+ * too: it can put back a label these inputs typed, and a field that does not
+ * resync would keep showing the text the user has just undone (REQ-009).
+ */
 const signature = (item: FurnitureItem, unit: Unit) =>
-  `${item.id}|${item.widthCm}|${item.depthCm}|${item.rotationDeg}|${unit}`;
+  `${item.id}|${item.widthCm}|${item.depthCm}|${item.rotationDeg}|${item.label ?? ''}|${unit}`;
 
 export interface FurnitureInspectorProps {
   item: FurnitureItem;
@@ -45,6 +51,12 @@ export interface FurnitureInspectorProps {
   onTransform: (transform: FurnitureTransform) => void;
   onRotate: (rotationDeg: number) => void;
   onDelete: () => void;
+  /**
+   * One undo entry per field the user works in, rather than one per keystroke —
+   * typing "150" commits at 1, 15 and 150 and those are not three edits.
+   */
+  onBeginEntry: () => void;
+  onEndEntry: () => void;
 }
 
 export default function FurnitureInspector({
@@ -54,28 +66,34 @@ export default function FurnitureInspector({
   onTransform,
   onRotate,
   onDelete,
+  onBeginEntry,
+  onEndEntry,
 }: FurnitureInspectorProps) {
   const [labelText, setLabelText] = useState(item.label ?? '');
   const [widthText, setWidthText] = useState(() => display(item.widthCm, unit));
   const [depthText, setDepthText] = useState(() => display(item.depthCm, unit));
   const [rotationText, setRotationText] = useState(() => String(Math.round(item.rotationDeg)));
   const [echo, setEcho] = useState(() => signature(item, unit));
-  const [labelledId, setLabelledId] = useState(item.id);
 
-  // The item changed from somewhere other than these inputs — a drag, a unit
-  // switch, a different selection — so re-label them. Deriving during render is
-  // the supported way to do this; an effect would show the stale values first.
+  // The item changed from somewhere other than these inputs — a drag, an undo, a
+  // unit switch, a different selection — so re-label them. Deriving during
+  // render is the supported way to do this; an effect would show the stale
+  // values first.
   const current = signature(item, unit);
   if (echo !== current) {
     setEcho(current);
+    setLabelText(item.label ?? '');
     setWidthText(display(item.widthCm, unit));
     setDepthText(display(item.depthCm, unit));
     setRotationText(String(Math.round(item.rotationDeg)));
   }
-  if (labelledId !== item.id) {
-    setLabelledId(item.id);
-    setLabelText(item.label ?? '');
-  }
+
+  const commitLabel = (text: string) => {
+    // Claim the change, as `commitSize` does — and claim what `labelFurniture`
+    // will store, which for an all-blank label is no label at all.
+    setEcho(signature({ ...item, label: text.trim() === '' ? undefined : text }, unit));
+    onLabel(text);
+  };
 
   const commitSize = (nextWidthText: string, nextDepthText: string) => {
     const w = Number.parseFloat(nextWidthText);
@@ -85,14 +103,14 @@ export default function FurnitureInspector({
     const widthCm = toCm(w, unit);
     const depthCm = toCm(d, unit);
     // Claim the change so the resync above does not undo what is being typed.
-    setEcho(`${item.id}|${widthCm}|${depthCm}|${item.rotationDeg}|${unit}`);
+    setEcho(signature({ ...item, widthCm, depthCm }, unit));
     onTransform({ xCm: item.xCm, yCm: item.yCm, widthCm, depthCm });
   };
 
   const commitRotation = (text: string) => {
     const deg = Number.parseFloat(text);
     if (!Number.isFinite(deg)) return;
-    setEcho(`${item.id}|${item.widthCm}|${item.depthCm}|${deg}|${unit}`);
+    setEcho(signature({ ...item, rotationDeg: deg }, unit));
     onRotate(deg);
   };
 
@@ -108,9 +126,11 @@ export default function FurnitureInspector({
           accessibilityLabel="Item label"
           placeholder="Label"
           value={labelText}
+          onFocus={onBeginEntry}
+          onBlur={onEndEntry}
           onChangeText={(t) => {
             setLabelText(t);
-            onLabel(t);
+            commitLabel(t);
           }}
           className="w-40 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
         />
@@ -121,6 +141,8 @@ export default function FurnitureInspector({
             accessibilityLabel="Item width"
             value={widthText}
             inputMode="decimal"
+            onFocus={onBeginEntry}
+            onBlur={onEndEntry}
             onChangeText={(t) => {
               setWidthText(t);
               commitSize(t, depthText);
@@ -133,6 +155,8 @@ export default function FurnitureInspector({
             accessibilityLabel="Item depth"
             value={depthText}
             inputMode="decimal"
+            onFocus={onBeginEntry}
+            onBlur={onEndEntry}
             onChangeText={(t) => {
               setDepthText(t);
               commitSize(widthText, t);
@@ -159,6 +183,8 @@ export default function FurnitureInspector({
           accessibilityLabel="Item rotation in degrees"
           value={rotationText}
           inputMode="numeric"
+          onFocus={onBeginEntry}
+          onBlur={onEndEntry}
           onChangeText={(t) => {
             setRotationText(t);
             commitRotation(t);

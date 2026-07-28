@@ -272,6 +272,8 @@ export default function RoomCanvasSkia({
   onMoveFurniture,
   onTransformFurniture,
   onRotateFurniture,
+  onBeginEntry,
+  onEndEntry,
 }: RoomCanvasSkiaProps) {
   // Same function the wrapper's drop handler uses, on the same measured size —
   // see `canvas-fit.ts`. Recomputing it inline here would be one padding
@@ -288,6 +290,8 @@ export default function RoomCanvasSkia({
     onMoveFurniture,
     onTransformFurniture,
     onRotateFurniture,
+    onBeginEntry,
+    onEndEntry,
   });
   const openingStroke = Math.max(4, WALL_PX * 2.5);
   const selectedItem = layout.furniture.find((item) => item.id === selectedId) ?? null;
