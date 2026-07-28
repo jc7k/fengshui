@@ -125,7 +125,8 @@ export function rectsIntersect(a: OrientedRect, b: OrientedRect): boolean {
   return true;
 }
 
-function distancePointToSegment(p: Vec2, a: Vec2, b: Vec2): number {
+/** Shortest distance from a point to a line segment. */
+export function distancePointToSegment(p: Vec2, a: Vec2, b: Vec2): number {
   const abx = b.x - a.x;
   const aby = b.y - a.y;
   const lenSq = abx * abx + aby * aby;

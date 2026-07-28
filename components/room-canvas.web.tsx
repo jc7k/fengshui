@@ -7,23 +7,20 @@
  *   1. No static import of the Skia renderer. Skia builds its API from
  *      `global.CanvasKit` at import time; importing before the WASM lands leaves
  *      the canvas mounted, correctly sized, and permanently blank. Only the
- *      small `web` loader entry point is imported directly — the renderer
- *      arrives through `getComponent`, which also keeps it out of the entry
- *      bundle so the landing page does not pay for it.
+ *      small `web` loader entry point is imported directly.
  *   2. No canvas during the static pre-render. `web.output: "static"` runs every
  *      route in Node, where CanvasKit aborts and takes the dev server with it.
  *      Hence the hydration gate.
+ *
+ * This file stays deliberately thin. Everything heavy — Skia, gesture-handler,
+ * reanimated — sits behind `getComponent` so it lands in a lazy chunk rather
+ * than the entry bundle the landing page downloads.
  */
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { useMeasuredSize } from './use-measured-size';
-
-import type { Room } from '../core';
-
-export interface RoomCanvasProps {
-  room: Room;
-}
+import type { RoomCanvasProps } from './room-canvas-props';
 
 function Loading() {
   return (
@@ -36,7 +33,7 @@ function Loading() {
   );
 }
 
-function SkiaCanvas(props: { room: Room; widthPx: number; heightPx: number }) {
+function SkiaCanvas(props: Record<string, unknown>) {
   const {
     WithSkiaWeb,
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -45,13 +42,13 @@ function SkiaCanvas(props: { room: Room; widthPx: number; heightPx: number }) {
   return (
     <WithSkiaWeb
       getComponent={() => import('./room-canvas-skia')}
-      componentProps={props}
+      componentProps={props as never}
       fallback={<Loading />}
     />
   );
 }
 
-export default function RoomCanvas({ room }: RoomCanvasProps) {
+export default function RoomCanvas(props: RoomCanvasProps) {
   const [hydrated, setHydrated] = useState(false);
   const { size, onLayout, measured } = useMeasuredSize();
 
@@ -60,7 +57,7 @@ export default function RoomCanvas({ room }: RoomCanvasProps) {
   return (
     <View testID="room-canvas-host" style={{ flex: 1, minHeight: 320 }} onLayout={onLayout}>
       {hydrated && measured ? (
-        <SkiaCanvas room={room} widthPx={size.width} heightPx={size.height} />
+        <SkiaCanvas {...props} widthPx={size.width} heightPx={size.height} />
       ) : (
         <Loading />
       )}

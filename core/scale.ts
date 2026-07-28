@@ -12,6 +12,15 @@
 
 import type { Room } from './types';
 
+/**
+ * Breathing room kept clear around the room, pixels.
+ *
+ * Exported because the renderer and the drag handler must compute the *same*
+ * fit — if they disagree by even a pixel of padding, a pointer lands on
+ * different centimetres than the one it appears to touch.
+ */
+export const PADDING_PX = 24;
+
 export interface Viewport {
   /** Available drawing area in pixels. */
   widthPx: number;

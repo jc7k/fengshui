@@ -12,20 +12,15 @@ import { View } from 'react-native';
 
 import RoomCanvasSkia from './room-canvas-skia';
 import { useMeasuredSize } from './use-measured-size';
+import type { RoomCanvasProps } from './room-canvas-props';
 
-import type { Room } from '../core';
-
-export interface RoomCanvasProps {
-  room: Room;
-}
-
-export default function RoomCanvas({ room }: RoomCanvasProps) {
+export default function RoomCanvas(props: RoomCanvasProps) {
   const { size, onLayout, measured } = useMeasuredSize();
 
   return (
     <View testID="room-canvas-host" style={{ flex: 1, minHeight: 320 }} onLayout={onLayout}>
       {measured ? (
-        <RoomCanvasSkia room={room} widthPx={size.width} heightPx={size.height} />
+        <RoomCanvasSkia {...props} widthPx={size.width} heightPx={size.height} />
       ) : null}
     </View>
   );
