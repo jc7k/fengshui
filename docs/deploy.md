@@ -10,8 +10,20 @@ Supabase's Site URL / Additional Redirect URLs.
 
 | Environment | URL |
 | --- | --- |
-| Production (`main`) | _pending — fill in after the first production deploy_ |
-| Preview (per-branch) | _pending — fill in after the first branch deploy_ |
+| Production (`main`) | https://fengshui-theta.vercel.app |
+| Preview (per-branch) | _pending — no non-`main` branch has been deployed yet_ |
+
+Verified against production on 2026-07-29:
+
+| Path | Result |
+| --- | --- |
+| `/` | 200 |
+| `/design` (hard refresh) | 200 — the deep-link case this config exists for |
+| `/design/` | 308 → `/design` (`trailingSlash: false`) |
+| `/not-a-real-route` | 200 shell — the rewrite tradeoff below, working as designed |
+
+`/canvaskit.wasm` serves at 8,076,553 bytes with `content-type: application/wasm`,
+confirming the `postinstall` hook ran during Vercel's install step.
 
 Preview URLs follow the pattern `https://fengshui-<hash>-<scope>.vercel.app`, one
 per deployment. Record a representative one here; for OAuth, prefer the stable
@@ -84,6 +96,33 @@ status code. If a real 404 status matters later, drop the rewrite and rely on
 the `postinstall` script (`setup-skia-web public`), which runs during Vercel's
 `npm install`, and lands at `dist/canvaskit.wasm`. No dashboard step needed —
 but if a deploy ever renders a blank canvas, check that `postinstall` ran.
+
+### Blank canvas: check the viewer's WebGL before suspecting the deploy
+
+CanvasKit renders through WebGL. A browser with hardware acceleration disabled
+gives a correctly-sized, correctly-positioned, permanently blank `<canvas>` and
+no error dialog — indistinguishable at a glance from a missing-WASM deploy bug.
+This cost real debugging time on 2026-07-29; the deploy was fine and the viewer's
+GPU was off.
+
+Check the viewer first, in the console on `/design`:
+
+```js
+!!document.createElement('canvas').getContext('webgl2')   // false ⇒ it's the browser
+```
+
+Then `chrome://gpu` → "WebGL: Hardware accelerated", and Settings → System →
+"Use hardware acceleration when available".
+
+The same trap applies to automated checks: **headless Chromium has no WebGL by
+default**, so it reports a blank canvas no matter what the build does. To screenshot
+the canvas for real, force software GL:
+
+```bash
+google-chrome --headless=new --use-gl=angle --use-angle=swiftshader \
+  --enable-unsafe-swiftshader --virtual-time-budget=30000 \
+  --screenshot=out.png https://fengshui-theta.vercel.app/design
+```
 
 ## Dashboard steps (human required)
 
