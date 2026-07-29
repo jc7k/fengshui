@@ -53,7 +53,7 @@ export default function FindingBadges({ layout, badges, widthPx, heightPx }: Fin
             pointerEvents="none"
             testID={`finding-badge-${item.id}`}
             accessibilityLabel={badge.label}
-            className={warning ? 'bg-amber-500' : 'bg-sky-500'}
+            className={warning ? 'bg-severity-warning' : 'bg-severity-info'}
             style={{
               position: 'absolute',
               left: p.x - BADGE_PX / 2,
@@ -65,7 +65,9 @@ export default function FindingBadges({ layout, badges, widthPx, heightPx }: Fin
               justifyContent: 'center',
             }}
           >
-            <Text className="text-xs font-bold text-white">{warning ? '!' : 'i'}</Text>
+            <Text className="text-fine-print font-bold text-on-primary">
+              {warning ? '!' : 'i'}
+            </Text>
           </View>
         );
       })}

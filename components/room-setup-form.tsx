@@ -78,10 +78,10 @@ export default function RoomSetupForm({
   };
 
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-lg p-lg">
       <View>
-        <Text className="mb-2 text-sm font-medium text-neutral-700">Room type</Text>
-        <View className="flex-row flex-wrap gap-2">
+        <Text className="mb-xs text-caption-strong font-semibold text-ink-muted-80">Room type</Text>
+        <View className="flex-row flex-wrap gap-xs">
           {ROOM_TYPES.map((type) => {
             const selected = type === roomType;
             return (
@@ -91,11 +91,11 @@ export default function RoomSetupForm({
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
                 onPress={() => onChangeRoomType(type)}
-                className={`rounded-full border px-3 py-1.5 ${
-                  selected ? 'border-blue-600 bg-blue-600' : 'border-neutral-300 bg-white'
+                className={`rounded-pill border px-md py-xs ${
+                  selected ? 'border-primary bg-primary' : 'border-hairline bg-canvas'
                 }`}
               >
-                <Text className={selected ? 'text-white' : 'text-neutral-800'}>
+                <Text className={`text-caption ${selected ? 'text-on-primary' : 'text-ink'}`}>
                   {ROOM_TYPE_LABELS[type]}
                 </Text>
               </Pressable>
@@ -105,8 +105,8 @@ export default function RoomSetupForm({
       </View>
 
       <View>
-        <Text className="mb-2 text-sm font-medium text-neutral-700">Dimensions</Text>
-        <View className="flex-row items-center gap-3">
+        <Text className="mb-xs text-caption-strong font-semibold text-ink-muted-80">Dimensions</Text>
+        <View className="flex-row items-center gap-sm">
           <TextInput
             testID="room-width"
             accessibilityLabel="Room width"
@@ -118,9 +118,9 @@ export default function RoomSetupForm({
               setWidthText(t);
               commit(t, lengthText);
             }}
-            className="w-24 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+            className="w-24 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
           />
-          <Text className="text-neutral-500">×</Text>
+          <Text className="text-caption text-ink-muted-48">×</Text>
           <TextInput
             testID="room-length"
             accessibilityLabel="Room length"
@@ -132,9 +132,9 @@ export default function RoomSetupForm({
               setLengthText(t);
               commit(widthText, t);
             }}
-            className="w-24 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+            className="w-24 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
           />
-          <View className="flex-row overflow-hidden rounded border border-neutral-300">
+          <View className="flex-row overflow-hidden rounded-sm border border-hairline">
             {(['ft', 'm'] as Unit[]).map((u) => (
               <Pressable
                 key={u}
@@ -142,9 +142,11 @@ export default function RoomSetupForm({
                 accessibilityRole="button"
                 accessibilityState={{ selected: u === unit }}
                 onPress={() => switchUnit(u)}
-                className={`px-3 py-2 ${u === unit ? 'bg-neutral-800' : 'bg-white'}`}
+                className={`px-md py-sm ${u === unit ? 'bg-ink' : 'bg-canvas'}`}
               >
-                <Text className={u === unit ? 'text-white' : 'text-neutral-700'}>
+                <Text
+                  className={`text-button-utility ${u === unit ? 'text-on-dark' : 'text-ink-muted-80'}`}
+                >
                   {UNIT_LABELS[u]}
                 </Text>
               </Pressable>

@@ -115,12 +115,12 @@ export default function FurnitureInspector({
   };
 
   return (
-    <View testID="furniture-inspector" className="gap-3 border-t border-neutral-200 px-4 py-3">
-      <Text className="text-sm font-medium text-neutral-700">
+    <View testID="furniture-inspector" className="gap-sm border-t border-divider-soft bg-canvas px-lg py-sm">
+      <Text className="text-caption-strong font-semibold text-ink-muted-80">
         {FURNITURE_SPECS[item.type].name}
       </Text>
 
-      <View className="flex-row flex-wrap items-center gap-3">
+      <View className="flex-row flex-wrap items-center gap-sm">
         <TextInput
           testID="furniture-label-input"
           accessibilityLabel="Item label"
@@ -132,10 +132,10 @@ export default function FurnitureInspector({
             setLabelText(t);
             commitLabel(t);
           }}
-          className="w-40 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+          className="w-40 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
         />
 
-        <View className="flex-row items-center gap-2">
+        <View className="flex-row items-center gap-xs">
           <TextInput
             testID="furniture-width"
             accessibilityLabel="Item width"
@@ -147,9 +147,9 @@ export default function FurnitureInspector({
               setWidthText(t);
               commitSize(t, depthText);
             }}
-            className="w-20 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+            className="w-20 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
           />
-          <Text className="text-neutral-500">×</Text>
+          <Text className="text-caption text-ink-muted-48">×</Text>
           <TextInput
             testID="furniture-depth"
             accessibilityLabel="Item depth"
@@ -161,22 +161,22 @@ export default function FurnitureInspector({
               setDepthText(t);
               commitSize(widthText, t);
             }}
-            className="w-20 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+            className="w-20 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
           />
-          <Text className="text-neutral-500">{unit}</Text>
+          <Text className="text-caption text-ink-muted-48">{unit}</Text>
         </View>
       </View>
 
-      <View className="flex-row flex-wrap items-center gap-2">
-        <Text className="text-sm text-neutral-700">Rotation</Text>
+      <View className="flex-row flex-wrap items-center gap-xs">
+        <Text className="text-caption text-ink-muted-80">Rotation</Text>
         <Pressable
           testID="rotate-left"
           accessibilityRole="button"
           accessibilityLabel={`Rotate ${ROTATION_SNAP_DEG} degrees anticlockwise`}
           onPress={() => onRotate(item.rotationDeg - ROTATION_SNAP_DEG)}
-          className="rounded border border-neutral-300 bg-white px-3 py-2"
+          className="rounded-sm border border-hairline bg-canvas px-md py-sm"
         >
-          <Text className="text-neutral-800">−{ROTATION_SNAP_DEG}°</Text>
+          <Text className="text-button-utility text-ink">−{ROTATION_SNAP_DEG}°</Text>
         </Pressable>
         <TextInput
           testID="furniture-rotation"
@@ -189,25 +189,25 @@ export default function FurnitureInspector({
             setRotationText(t);
             commitRotation(t);
           }}
-          className="w-20 rounded border border-neutral-300 px-3 py-2 text-neutral-900"
+          className="w-20 rounded-sm border border-hairline bg-canvas px-md py-sm text-body text-ink"
         />
         <Pressable
           testID="rotate-right"
           accessibilityRole="button"
           accessibilityLabel={`Rotate ${ROTATION_SNAP_DEG} degrees clockwise`}
           onPress={() => onRotate(item.rotationDeg + ROTATION_SNAP_DEG)}
-          className="rounded border border-neutral-300 bg-white px-3 py-2"
+          className="rounded-sm border border-hairline bg-canvas px-md py-sm"
         >
-          <Text className="text-neutral-800">+{ROTATION_SNAP_DEG}°</Text>
+          <Text className="text-button-utility text-ink">+{ROTATION_SNAP_DEG}°</Text>
         </Pressable>
 
         <Pressable
           testID="delete-furniture"
           accessibilityRole="button"
           onPress={onDelete}
-          className="rounded border border-red-300 bg-white px-3 py-2"
+          className="rounded-sm border border-hairline bg-canvas px-md py-sm"
         >
-          <Text className="text-red-600">Delete</Text>
+          <Text className="text-button-utility text-ink">Delete</Text>
         </Pressable>
       </View>
     </View>

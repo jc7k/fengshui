@@ -44,7 +44,7 @@ export default function DesignScreen() {
   const selectedItem = layout.furniture.find((f) => f.id === selectedId) ?? null;
 
   return (
-    <ScrollView className="flex-1 bg-white" contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView className="flex-1 bg-canvas" contentContainerStyle={{ flexGrow: 1 }}>
       <RoomSetupForm
         roomType={layout.roomType}
         widthCm={layout.room.widthCm}
@@ -59,7 +59,7 @@ export default function DesignScreen() {
 
       {/* Undo/redo (PRD §4.2), borrowing the openings toolbar's button so the
           controls above and below the canvas look like one set. */}
-      <View className="flex-row items-center gap-2 px-4">
+      <View className="flex-row items-center gap-xs px-lg">
         <Button testID="undo" label="Undo" onPress={editor.undo} disabled={!editor.canUndo} />
         <Button testID="redo" label="Redo" onPress={editor.redo} disabled={!editor.canRedo} />
       </View>
@@ -97,14 +97,14 @@ export default function DesignScreen() {
         />
       ) : null}
 
-      <View className="px-4 py-2">
-        <Text testID="room-summary" className="text-sm text-neutral-500">
+      <View className="px-lg py-xs">
+        <Text testID="room-summary" className="text-caption text-ink-muted-48">
           {formatLength(layout.room.widthCm, layout.displayUnit)} ×{' '}
           {formatLength(layout.room.lengthCm, layout.displayUnit)}
         </Text>
       </View>
 
-      <View className="flex-1 px-4 pb-6" style={{ minHeight: 400 }}>
+      <View className="flex-1 px-lg pb-lg" style={{ minHeight: 400 }}>
         <RoomCanvas
           layout={layout}
           selectedId={selectedId}

@@ -51,62 +51,64 @@ function Issue({ row, onSelect }: { row: IssueRow; onSelect: (id: string | null)
       accessibilityRole={row.selectableId ? 'button' : undefined}
       disabled={!row.selectableId}
       onPress={() => onSelect(row.selectableId)}
-      className={`mb-2 rounded border p-3 ${
-        warning ? 'border-amber-300 bg-amber-50' : 'border-sky-300 bg-sky-50'
+      className={`mb-xs rounded-lg border p-sm ${
+        warning
+          ? 'border-severity-warning-hairline bg-severity-warning-surface'
+          : 'border-severity-info-hairline bg-severity-info-surface'
       }`}
     >
-      <View className="mb-1 flex-row items-center gap-2">
+      <View className="mb-xxs flex-row items-center gap-xs">
         <Text
-          className={`rounded px-2 py-0.5 text-xs font-semibold text-white ${
-            warning ? 'bg-amber-500' : 'bg-sky-500'
+          className={`rounded-pill px-xs py-xxs text-fine-print font-semibold text-on-primary ${
+            warning ? 'bg-severity-warning' : 'bg-severity-info'
           }`}
         >
           {warning ? 'Warning' : 'Tip'}
         </Text>
-        <Text className="flex-1 text-sm font-semibold text-neutral-900">{row.title}</Text>
+        <Text className="flex-1 text-caption-strong font-semibold text-ink">{row.title}</Text>
       </View>
-      <Text className="mb-1 text-xs text-neutral-500">{row.itemNames}</Text>
-      <Text className="mb-1 text-sm text-neutral-800">{row.explanation}</Text>
-      <Text className="text-sm text-neutral-700">Try this: {row.fix}</Text>
+      <Text className="mb-xxs text-fine-print text-ink-muted-48">{row.itemNames}</Text>
+      <Text className="mb-xxs text-caption text-ink-muted-80">{row.explanation}</Text>
+      <Text className="text-caption text-ink-muted-80">Try this: {row.fix}</Text>
     </Pressable>
   );
 }
 
 function FeedbackPanel({ view, onSelect }: FeedbackPanelProps) {
   return (
-    <View testID="feedback-panel" className="border-t border-neutral-200 px-4 py-4">
-      <Text className="text-base font-semibold text-neutral-900">How this layout is doing</Text>
-      <Text testID="feedback-summary" className="mb-3 text-sm text-neutral-500">
+    <View testID="feedback-panel" className="border-t border-divider-soft bg-canvas px-lg py-lg">
+      <Text className="text-tagline font-semibold text-ink">How this layout is doing</Text>
+      <Text testID="feedback-summary" className="mb-sm text-caption text-ink-muted-48">
         {summary(view)}
       </Text>
 
       {!view.hasFurniture ? (
-        <Text testID="feedback-empty" className="text-sm text-neutral-500">
+        <Text testID="feedback-empty" className="text-caption text-ink-muted-48">
           Add a piece of furniture and feedback will appear here as you move it.
         </Text>
       ) : null}
 
       {view.issues.length > 0 ? (
         <>
-          <Text className="mb-2 text-sm font-semibold text-neutral-700">Things to look at</Text>
+          <Text className="mb-xs text-caption-strong font-semibold text-ink-muted-80">Things to look at</Text>
           {view.issues.map((row) => (
             <Issue key={row.key} row={row} onSelect={onSelect} />
           ))}
         </>
       ) : view.hasFurniture ? (
-        <Text testID="feedback-all-clear" className="mb-3 text-sm text-neutral-700">
+        <Text testID="feedback-all-clear" className="mb-sm text-caption text-ink-muted-80">
           Nothing to flag right now.
         </Text>
       ) : null}
 
       {view.passed.length > 0 ? (
         <>
-          <Text className="mb-1 mt-2 text-sm font-semibold text-neutral-700">Looking good</Text>
+          <Text className="mb-xxs mt-xs text-caption-strong font-semibold text-ink-muted-80">Looking good</Text>
           {view.passed.map((row) => (
             <Text
               key={row.ruleId}
               testID={`feedback-passed-${row.ruleId}`}
-              className="text-sm text-neutral-500"
+              className="text-caption text-ink-muted-48"
             >
               ✓ {row.title}
             </Text>
@@ -115,7 +117,7 @@ function FeedbackPanel({ view, onSelect }: FeedbackPanelProps) {
       ) : null}
 
       {view.notApplicableCount > 0 ? (
-        <Text testID="feedback-not-applicable" className="mt-3 text-xs text-neutral-400">
+        <Text testID="feedback-not-applicable" className="mt-sm text-fine-print text-ink-muted-48">
           {view.notApplicableCount} other check{view.notApplicableCount === 1 ? '' : 's'} had
           nothing to look at in this room.
         </Text>

@@ -50,7 +50,7 @@ export default function FurnitureLabels({ layout, widthPx, heightPx }: Furniture
             <Text
               testID={`furniture-label-${item.id}`}
               numberOfLines={1}
-              className="rounded bg-white/80 px-1 text-xs text-neutral-800"
+              className="rounded-xs bg-canvas/80 px-xxs text-fine-print text-ink"
             >
               {item.label}
             </Text>

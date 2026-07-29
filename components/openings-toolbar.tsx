@@ -31,25 +31,29 @@ export function Button({
   label: string;
   onPress: () => void;
   disabled?: boolean;
-  tone?: 'default' | 'danger' | 'primary';
+  /**
+   * There is no `danger` tone. The design system allows exactly one interactive
+   * colour, and a destructive red would be a second one. Delete reads as a
+   * plain utility button instead, which is affordable here because every
+   * deletion is undoable (REQ-009) and the control stays disabled until
+   * something is selected.
+   */
+  tone?: 'default' | 'primary';
 }) {
   const base =
     tone === 'primary'
-      ? 'border-blue-600 bg-blue-600'
-      : tone === 'danger'
-        ? 'border-red-300 bg-white'
-        : 'border-neutral-300 bg-white';
-  const text =
-    tone === 'primary' ? 'text-white' : tone === 'danger' ? 'text-red-600' : 'text-neutral-800';
+      ? 'rounded-pill border-primary bg-primary'
+      : 'rounded-sm border-hairline bg-canvas';
+  const text = tone === 'primary' ? 'text-on-primary' : 'text-ink';
   return (
     <Pressable
       testID={testID}
       accessibilityRole="button"
       disabled={disabled}
       onPress={onPress}
-      className={`rounded border px-3 py-2 ${base} ${disabled ? 'opacity-40' : ''}`}
+      className={`border px-md py-sm ${base} ${disabled ? 'opacity-40' : ''}`}
     >
-      <Text className={text}>{label}</Text>
+      <Text className={`text-button-utility ${text}`}>{label}</Text>
     </Pressable>
   );
 }
@@ -66,8 +70,8 @@ export default function OpeningsToolbar({
   const selectedDoor = layout.doors.find((d) => d.id === selectedId) ?? null;
 
   return (
-    <View className="gap-3 px-4">
-      <View className="flex-row flex-wrap items-center gap-2">
+    <View className="gap-sm px-lg">
+      <View className="flex-row flex-wrap items-center gap-xs">
         <Button testID="add-door" label="+ Door" onPress={onAddDoor} tone="primary" />
         <Button testID="add-window" label="+ Window" onPress={onAddWindow} />
         <Button
@@ -75,7 +79,6 @@ export default function OpeningsToolbar({
           label="Delete"
           onPress={onDelete}
           disabled={!selectedId}
-          tone="danger"
         />
         <Button
           testID="toggle-swing"
@@ -83,26 +86,26 @@ export default function OpeningsToolbar({
           onPress={onToggleSwing}
           disabled={!selectedDoor}
         />
-        <Text testID="opening-counts" className="ml-1 text-sm text-neutral-500">
+        <Text testID="opening-counts" className="ml-xxs text-caption text-ink-muted-48">
           {layout.doors.length} door{layout.doors.length === 1 ? '' : 's'},{' '}
           {layout.windows.length} window{layout.windows.length === 1 ? '' : 's'}
         </Text>
       </View>
 
       {layout.doors.length > 1 ? (
-        <View className="flex-row flex-wrap items-center gap-2">
-          <Text className="text-sm text-neutral-700">Main door:</Text>
+        <View className="flex-row flex-wrap items-center gap-xs">
+          <Text className="text-caption text-ink-muted-80">Main door:</Text>
           {layout.doors.map((d, i) => (
             <Pressable
               key={d.id}
               testID={`main-door-${d.id}`}
               accessibilityRole="button"
               onPress={() => onSetMainDoor(d.id)}
-              className={`rounded-full border px-3 py-1 ${
-                d.isMain ? 'border-blue-700 bg-blue-700' : 'border-neutral-300 bg-white'
+              className={`rounded-pill border px-md py-xs ${
+                d.isMain ? 'border-primary bg-primary' : 'border-hairline bg-canvas'
               }`}
             >
-              <Text className={d.isMain ? 'text-white' : 'text-neutral-700'}>
+              <Text className={`text-caption ${d.isMain ? 'text-on-primary' : 'text-ink-muted-80'}`}>
                 Door {i + 1} ({d.wall})
               </Text>
             </Pressable>
@@ -110,7 +113,7 @@ export default function OpeningsToolbar({
         </View>
       ) : null}
 
-      <Text className="text-xs text-neutral-400">
+      <Text className="text-fine-print text-ink-muted-48">
         Drag a door or window along the walls. It snaps to the nearest wall.
       </Text>
     </View>

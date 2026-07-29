@@ -14,6 +14,7 @@ import { View } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { canvasFit } from './canvas-fit';
+import { TOKENS } from './design-tokens';
 import { HANDLE_KNOB_PX, useCanvasDrag } from './use-canvas-drag';
 import type { RoomCanvasProps } from './room-canvas-props';
 
@@ -40,16 +41,29 @@ export interface RoomCanvasSkiaProps extends RoomCanvasProps {
 
 const WALL_PX = 3;
 
+/**
+ * Structural canvas colour, drawn from the design tokens.
+ *
+ * Two readings of the token set worth recording, since neither is spelled out
+ * in the source document:
+ *
+ *   - Doors take Action Blue and windows take a mid neutral. The document
+ *     allows exactly one accent, so the two opening types cannot both be blue;
+ *     the door — the opening every rule actually cares about — keeps it.
+ *   - Selection uses Focus Blue, which is what the document reserves that
+ *     colour for. It replaces the old orange, the last non-blue interactive
+ *     signal on the canvas.
+ */
 const COLORS = {
-  floor: '#f8fafc',
-  wall: '#334155',
-  door: '#2563eb',
-  doorMain: '#1d4ed8',
-  swing: '#93c5fd',
-  window: '#0ea5e9',
-  selected: '#f97316',
-  grid: '#e2e8f0',
-  outline: '#64748b',
+  floor: TOKENS.canvasParchment,
+  wall: TOKENS.ink,
+  door: TOKENS.primary,
+  doorMain: TOKENS.primaryFocus,
+  swing: TOKENS.primaryOnDark,
+  window: TOKENS.inkMuted48,
+  selected: TOKENS.primaryFocus,
+  grid: TOKENS.hairline,
+  outline: TOKENS.inkMuted48,
 };
 
 /**
@@ -57,24 +71,30 @@ const COLORS = {
  * field of identical boxes. Deliberately flat colour and nothing else: the REQ
  * scopes the MVP to simple shapes, and icons would need assets the rules do not
  * care about. Names are the item's job — see `furniture-labels.tsx`.
+ *
+ * Retuned for the design system: same one-hue-per-type function, but held to a
+ * narrow band of lightness and low chroma so the plan reads as a single quiet
+ * family rather than sixteen competing pastels. The document's "UI recedes so
+ * the product can speak" applies here with the room as the product — these
+ * fills are identification, not decoration.
  */
 const FURNITURE_COLORS: Record<FurnitureType, string> = {
-  bed: '#c7d2fe',
-  nightstand: '#ddd6fe',
-  dresser: '#e9d5ff',
-  mirror: '#bae6fd',
-  desk: '#fed7aa',
-  sofa: '#bbf7d0',
-  armchair: '#a7f3d0',
-  coffee_table: '#fde68a',
-  tv_stand: '#e5e7eb',
-  bookshelf: '#fecaca',
-  chair: '#fbcfe8',
-  filing_cabinet: '#cbd5e1',
-  plant: '#86efac',
-  rug: '#fef3c7',
-  lamp: '#fef08a',
-  artwork: '#f5d0fe',
+  bed: '#d8dce8',
+  nightstand: '#e0dce8',
+  dresser: '#e6dee6',
+  mirror: '#d6e2ea',
+  desk: '#eae0d4',
+  sofa: '#d9e4da',
+  armchair: '#d4e2dd',
+  coffee_table: '#ece3d2',
+  tv_stand: '#e2e2e4',
+  bookshelf: '#ecdcd8',
+  chair: '#ecdce2',
+  filing_cabinet: '#dcdee2',
+  plant: '#d6e6d6',
+  rug: '#eee6d8',
+  lamp: '#efe9d4',
+  artwork: '#e6dcea',
 };
 
 function OpeningLine({

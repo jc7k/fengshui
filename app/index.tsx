@@ -12,7 +12,7 @@ export default function Index() {
       <Link
         href="/design"
         testID="cta-design"
-        className="rounded-full bg-blue-600 px-5 py-3 text-base font-medium text-white"
+        className="rounded-full bg-blue-600 px-5 py-3 text-base font-semibold text-white"
       >
         Design your room
       </Link>

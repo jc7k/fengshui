@@ -44,25 +44,25 @@ export default function FurniturePalette({
   onPlace,
 }: FurniturePaletteProps) {
   return (
-    <View className="gap-3 px-4 py-2">
+    <View className="gap-sm px-lg py-xs">
       <View className="flex-row items-center justify-between">
-        <Text className="text-sm font-medium text-neutral-700">Furniture</Text>
-        <View className="flex-row overflow-hidden rounded border border-neutral-300">
-          <Pressable
-            testID="snap-toggle"
-            accessibilityRole="button"
-            accessibilityState={{ selected: snapEnabled }}
-            onPress={onToggleSnap}
-            className={`px-3 py-2 ${snapEnabled ? 'bg-neutral-800' : 'bg-white'}`}
+        <Text className="text-caption-strong font-semibold text-ink-muted-80">Furniture</Text>
+        <Pressable
+          testID="snap-toggle"
+          accessibilityRole="button"
+          accessibilityState={{ selected: snapEnabled }}
+          onPress={onToggleSnap}
+          className={`rounded-sm px-md py-sm ${snapEnabled ? 'bg-ink' : 'bg-canvas border border-hairline'}`}
+        >
+          <Text
+            className={`text-button-utility ${snapEnabled ? 'text-on-dark' : 'text-ink-muted-80'}`}
           >
-            <Text className={snapEnabled ? 'text-white' : 'text-neutral-700'}>
-              Snap {snapEnabled ? 'on' : 'off'}
-            </Text>
-          </Pressable>
-        </View>
+            Snap {snapEnabled ? 'on' : 'off'}
+          </Text>
+        </Pressable>
       </View>
 
-      <View className="flex-row flex-wrap gap-2">
+      <View className="flex-row flex-wrap gap-xs">
         {furnitureForRoomType(roomType).map((type) => {
           const spec = FURNITURE_SPECS[type];
           const dragging = type === pendingType;
@@ -74,12 +74,12 @@ export default function FurniturePalette({
               accessibilityLabel={`Add ${spec.name}`}
               onPointerDown={() => onDragStart(type)}
               onPress={() => onPlace(type)}
-              className={`rounded-full border px-3 py-1.5 ${
-                dragging ? 'border-blue-600 bg-blue-50' : 'border-neutral-300 bg-white'
+              className={`rounded-pill border bg-canvas px-md py-xs ${
+                dragging ? 'border-primary-focus' : 'border-hairline'
               }`}
             >
-              <Text className="text-neutral-800">{spec.name}</Text>
-              <Text className="text-xs text-neutral-400">
+              <Text className="text-caption text-ink">{spec.name}</Text>
+              <Text className="text-fine-print text-ink-muted-48">
                 {formatLength(spec.defaultWidthCm, unit)} ×{' '}
                 {formatLength(spec.defaultDepthCm, unit)}
               </Text>
@@ -88,7 +88,7 @@ export default function FurniturePalette({
         })}
       </View>
 
-      <Text className="text-xs text-neutral-400">
+      <Text className="text-fine-print text-ink-muted-48">
         Drag a chip onto the room, or tap it to drop the item in the middle.
       </Text>
     </View>
